@@ -141,7 +141,8 @@ const el = (tag, attrs={}, ...kids) => {
   const addKid = k => {
     if (k == null || k === false) return;
     if (Array.isArray(k)) k.forEach(addKid);
-    else e.appendChild(typeof k === 'string' ? document.createTextNode(k) : k);
+    else if (typeof k === 'string' || typeof k === 'number') e.appendChild(document.createTextNode(String(k)));
+    else e.appendChild(k);
   };
   kids.forEach(addKid);
   return e;
