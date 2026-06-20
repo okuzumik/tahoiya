@@ -261,9 +261,8 @@ async function submitVote(idx) {
   const sh  = toArr(gs.shuffled);
   const ri  = sh.findIndex(d => d.isReal);
   const sc  = Object.assign({}, gs.scores);
-  let anyOk = false;
   kids.forEach(c => {
-    if (allVotes[c.id] === ri) { sc[c.id] = (sc[c.id]||0) + 2; anyOk = true; }
+    if (allVotes[c.id] === ri) sc[c.id] = (sc[c.id]||0) + 2;
   });
   sh.forEach((def, i) => {
     if (!def.isReal) {
@@ -271,7 +270,9 @@ async function submitVote(idx) {
       if (vc && sc[def.playerId] !== undefined) sc[def.playerId] = (sc[def.playerId]||0) + vc;
     }
   });
-  if (!anyOk && sc[gs.oyaId] !== undefined) sc[gs.oyaId] = (sc[gs.oyaId]||0) + 2;
+  // 親：誤答した子の人数分 +1点（原典ルール）
+  const wrongCount = kids.filter(c => allVotes[c.id] !== ri).length;
+  if (wrongCount > 0 && sc[gs.oyaId] !== undefined) sc[gs.oyaId] = (sc[gs.oyaId]||0) + wrongCount;
 
   const isLast    = (gs.turn||1) >= (gs.totalTurns||1);
   const nextPhase = isLast ? 'final' : 'results';
@@ -428,7 +429,7 @@ function renderHome() {
   ));
   wrap.appendChild(el('div',{class:'rules-card'},
     '親が辞書から難しい言葉を選び、子それぞれがそれっぽい嘘の定義を考えます。', el('br'), el('br'),
-    '本物を当てたら +2点　／　嘘定義に票が入ったら +1点/票　／　誰も正解しなければ親 +2点'
+    '本物を当てたら +2点　／　嘘定義に票が入ったら +1点/票　／　親は誤答した人数分 +1点'
   ));
   return wrap;
 }
@@ -878,16 +879,18 @@ function renderKoResult(sh, vs, kids, ri) {
 }
 
 function renderOyaResult(sh, vs, kids, ri) {
-  const correctCount = kids.filter(c=>vs[c.id]===ri).length;
+  const wrongCount   = kids.filter(c=>vs[c.id]!==ri).length;
+  const correctCount = kids.length - wrongCount;
   const rows = [];
-  if (correctCount === 0) {
+  if (wrongCount > 0) {
     rows.push(el('div',{class:'my-result-row'},
-      el('span',{class:'my-result-label'},'誰も正解しなかった → ボーナス'),
-      el('span',{class:'my-result-pts'},'+2点')
+      el('span',{class:'my-result-label'},
+        wrongCount+'人を騙した' + (correctCount>0 ? '（'+correctCount+'人は正解）' : '　全員騙せた！🎉')),
+      el('span',{class:'my-result-pts'},'+'+wrongCount+'点')
     ));
   } else {
     rows.push(el('div',{class:'my-result-row'},
-      el('span',{class:'my-result-zero'},correctCount+'人が正解した → ボーナスなし'),
+      el('span',{class:'my-result-zero'},'全員正解した → 得点なし'),
       el('span',{class:'my-result-zero'},'+0点')
     ));
   }
