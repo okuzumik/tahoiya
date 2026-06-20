@@ -225,7 +225,7 @@ async function submitVote(idx) {
   if (!kids.every(c => newVotes[c.id] !== undefined)) return; // not all done
 
   // Calc scores (deterministic → any client can do it)
-  const sh   = gs.shuffled;
+  const sh   = toArr(gs?.shuffled);
   const ri   = sh.findIndex(d => d.isReal);
   const sc   = {...(gs.scores||{})};
   let anyOk  = false;
@@ -445,7 +445,7 @@ function renderCollecting() {
 // ── Voting ──────────────────────────────────────────────────────
 function renderVoting() {
   const wrap   = el('div');
-  const sh     = gs.shuffled || [];
+  const sh     = toArr(gs?.shuffled);
   const vs     = gs.votes || {};
   const kids   = children();
   const vdone  = kids.filter(c => vs[c.id] !== undefined).length;
@@ -484,7 +484,7 @@ function renderVoting() {
 // ── Results ─────────────────────────────────────────────────────
 function renderResults() {
   const wrap   = el('div');
-  const sh     = gs.shuffled || [];
+  const sh     = toArr(gs?.shuffled);
   const vs     = gs.votes   || {};
   const sc     = gs.scores  || {};
   const ps     = players();
