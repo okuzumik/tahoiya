@@ -8,58 +8,86 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Noto Sans JP', sans-serif; background: #faf9f7; color: #1c1c1a; min-height: 100vh; -webkit-font-smoothing: antialiased; }
-    #app { max-width: 480px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
-    .logo { font-family: 'Noto Serif JP', serif; font-size: 26px; font-weight: 600; letter-spacing: 0.1em; }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-    .badge { font-size: 11px; color: #999; border: 0.5px solid #ddd; border-radius: 99px; padding: 3px 10px; }
-    .card { background: #fff; border: 0.5px solid #e0ddd8; border-radius: 14px; padding: 1.5rem; margin-bottom: 1rem; }
-    .role-label { font-size: 11px; letter-spacing: 0.1em; color: #aaa; margin-bottom: 6px; }
-    .section-title { font-size: 17px; font-weight: 500; margin-bottom: 0.75rem; }
-    .section-note { font-size: 13px; color: #888; line-height: 1.7; margin-bottom: 1rem; }
-    .divhr { border: none; border-top: 0.5px solid #ede9e3; margin: 0 0 1.25rem; }
-    .word-big { font-family: 'Noto Serif JP', serif; font-size: 38px; font-weight: 600; text-align: center; letter-spacing: 0.12em; padding: 1.25rem 0 1rem; }
-    .room-code { font-family: 'Noto Serif JP', serif; font-size: 44px; font-weight: 600; letter-spacing: 0.2em; text-align: center; padding: 0.75rem 0; }
-    input[type="text"], textarea { width: 100%; padding: 10px 12px; border: 0.5px solid #ddd; border-radius: 8px; font-size: 15px; font-family: 'Noto Sans JP', sans-serif; background: #fff; color: #1c1c1a; outline: none; margin-bottom: 10px; }
-    input[type="text"]:focus, textarea:focus { border-color: #bbb; }
-    textarea { resize: vertical; min-height: 84px; line-height: 1.6; }
-    .btn { display: block; width: 100%; padding: 11px 1rem; border: 0.5px solid #ccc; border-radius: 8px; background: transparent; color: #1c1c1a; font-size: 14px; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-align: center; margin-top: 2px; }
-    .btn:hover { background: #f5f4f0; }
-    .btn:disabled { opacity: 0.35; cursor: not-allowed; }
-    .btn-p { background: #1c1c1a; color: #faf9f7; border: none; }
-    .btn-p:hover { background: #333; }
-    .def-btn { display: flex; align-items: flex-start; gap: 14px; width: 100%; text-align: left; background: #fff; border: 0.5px solid #e0ddd8; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 8px; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; }
-    .def-btn:hover { background: #f5f4f0; }
-    .def-num { font-size: 12px; color: #bbb; min-width: 18px; padding-top: 2px; flex-shrink: 0; }
-    .def-text { font-size: 14px; line-height: 1.7; }
-    .def-result { border: 0.5px solid #e0ddd8; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 8px; display: flex; gap: 14px; }
-    .def-result.real { background: #f0f8f2; border-color: #b3dfc0; }
-    .def-meta { font-size: 11px; color: #bbb; margin-top: 4px; }
-    .def-meta.real { color: #3a8c55; font-weight: 500; }
-    .score-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 0.5px solid #f0ede8; }
-    .tag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 99px; margin-left: 6px; vertical-align: middle; }
-    .tag-oya { background: #e8f0fd; color: #3b5bb5; }
-    .tag-me { background: #f5f5f5; color: #888; }
-    .vote-chip { display: inline-block; background: #f5f4f0; border-radius: 99px; padding: 2px 7px; font-size: 11px; margin-left: 4px; color: #888; }
-    .prog-bar { display: flex; gap: 4px; margin-bottom: 1rem; }
-    .prog-dot { height: 3px; flex: 1; border-radius: 99px; background: #ede9e3; }
-    .prog-dot.done { background: #1c1c1a; }
-    .player-row { display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0; border-bottom: 0.5px solid #f0ede8; font-size: 14px; }
-    .waiting { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 65vh; text-align: center; padding: 2rem; }
-    .submitted { display: inline-block; background: #f0f8f2; color: #3a8c55; font-size: 12px; padding: 3px 10px; border-radius: 99px; margin-bottom: 1rem; }
-    .rules-card { background: #f5f4f0; border-radius: 12px; padding: 1rem 1.25rem; font-size: 13px; color: #888; line-height: 1.75; margin-top: 0.5rem; }
-    .err { color: #c0392b; font-size: 13px; margin-top: 6px; min-height: 18px; }
-    .muted { font-size: 13px; color: #aaa; text-align: center; margin-top: 1rem; }
-    @media (max-width: 380px) { .word-big { font-size: 30px; } .room-code { font-size: 34px; } }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Noto Sans JP',sans-serif;background:#faf9f7;color:#1c1c1a;min-height:100vh;-webkit-font-smoothing:antialiased}
+    #app{max-width:480px;margin:0 auto;padding:1.5rem 1rem 4rem}
+    .logo{font-family:'Noto Serif JP',serif;font-size:26px;font-weight:600;letter-spacing:.1em}
+    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+    .badge{font-size:11px;color:#999;border:.5px solid #ddd;border-radius:99px;padding:3px 10px}
+    .card{background:#fff;border:.5px solid #e0ddd8;border-radius:14px;padding:1.5rem;margin-bottom:1rem}
+    .card-green{background:#f0f8f2;border:.5px solid #b3dfc0;border-radius:14px;padding:1.5rem;margin-bottom:1rem}
+    .card-blue{background:#f0f4fd;border:.5px solid #b3c8f0;border-radius:14px;padding:1.5rem;margin-bottom:1rem}
+    .role-label{font-size:11px;letter-spacing:.1em;color:#aaa;margin-bottom:6px}
+    .section-title{font-size:17px;font-weight:500;margin-bottom:.75rem}
+    .section-note{font-size:13px;color:#888;line-height:1.7;margin-bottom:1rem}
+    .divhr{border:none;border-top:.5px solid #ede9e3;margin:1rem 0}
+    .word-big{font-family:'Noto Serif JP',serif;font-size:38px;font-weight:600;text-align:center;letter-spacing:.12em;padding:1rem 0}
+    .word-confirm{font-family:'Noto Serif JP',serif;font-size:44px;font-weight:600;text-align:center;letter-spacing:.14em;padding:1.5rem 0 1rem}
+    .room-code{font-family:'Noto Serif JP',serif;font-size:44px;font-weight:600;letter-spacing:.2em;text-align:center;padding:.75rem 0}
+    input[type=text],textarea,select{width:100%;padding:10px 12px;border:.5px solid #ddd;border-radius:8px;font-size:15px;font-family:'Noto Sans JP',sans-serif;background:#fff;color:#1c1c1a;outline:none;margin-bottom:10px;-webkit-appearance:none}
+    input:focus,textarea:focus,select:focus{border-color:#bbb}
+    textarea{resize:vertical;min-height:84px;line-height:1.6}
+    .btn{display:block;width:100%;padding:11px 1rem;border:.5px solid #ccc;border-radius:8px;background:transparent;color:#1c1c1a;font-size:14px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;text-align:center;margin-top:6px}
+    .btn:hover{background:#f5f4f0}
+    .btn:disabled{opacity:.35;cursor:not-allowed}
+    .btn-p{background:#1c1c1a;color:#faf9f7;border:none}
+    .btn-p:hover{background:#333}
+    .btn-sm{padding:6px 12px;font-size:12px;margin-top:0;border-radius:6px}
+    .btn-row{display:flex;gap:8px;margin-top:6px}
+    .btn-row .btn{margin-top:0}
+    .def-btn{display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;background:#fff;border:.5px solid #e0ddd8;border-radius:8px;padding:.85rem 1rem;margin-bottom:8px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:background .1s}
+    .def-btn:hover{background:#f5f4f0}
+    .def-num{font-size:14px;font-weight:500;color:#bbb;min-width:22px;padding-top:1px;flex-shrink:0}
+    .def-text{font-size:14px;line-height:1.7}
+    .num-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:1.2rem;border:.5px solid #e0ddd8;border-radius:10px;background:#fff;font-family:'Noto Serif JP',serif;font-size:28px;font-weight:600;cursor:pointer;margin-bottom:10px;letter-spacing:.05em;transition:background .1s}
+    .num-btn:hover{background:#f5f4f0}
+    .def-result{border:.5px solid #e0ddd8;border-radius:8px;padding:.85rem 1rem;margin-bottom:8px;display:flex;gap:14px}
+    .def-result.real{background:#f0f8f2;border-color:#b3dfc0}
+    .def-meta{font-size:11px;color:#bbb;margin-top:4px}
+    .def-meta.real{color:#3a8c55;font-weight:500}
+    .score-row{display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:.5px solid #f0ede8}
+    .score-rank{font-size:13px;color:#aaa;min-width:24px}
+    .score-name{font-size:14px;flex:1}
+    .score-pt{font-size:20px;font-weight:500;min-width:36px;text-align:right}
+    .tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;margin-left:6px;vertical-align:middle}
+    .tag-oya{background:#e8f0fd;color:#3b5bb5}
+    .tag-me{background:#f5f5f5;color:#888}
+    .vote-chip{display:inline-block;background:#f5f4f0;border-radius:99px;padding:2px 7px;font-size:11px;margin-left:4px;color:#888}
+    .pts-badge{display:inline-block;background:#f0f8f2;color:#3a8c55;font-weight:600;font-size:13px;padding:3px 10px;border-radius:99px;margin-left:6px}
+    .prog-bar{display:flex;gap:4px;margin-bottom:1rem}
+    .prog-dot{height:3px;flex:1;border-radius:99px;background:#ede9e3}
+    .prog-dot.done{background:#1c1c1a}
+    .player-row{display:flex;justify-content:space-between;align-items:center;padding:.45rem 0;border-bottom:.5px solid #f0ede8;font-size:14px}
+    .waiting{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:65vh;text-align:center;padding:2rem}
+    .submitted{display:inline-block;background:#f0f8f2;color:#3a8c55;font-size:12px;padding:3px 10px;border-radius:99px;margin-bottom:1rem}
+    .notice-green{font-size:13px;color:#3a8c55;margin-bottom:.75rem}
+    .rules-card{background:#f5f4f0;border-radius:12px;padding:1rem 1.25rem;font-size:13px;color:#888;line-height:1.75;margin-top:.5rem}
+    .err{color:#c0392b;font-size:13px;margin-top:6px;min-height:18px}
+    .muted{font-size:13px;color:#aaa;text-align:center;margin-top:1rem}
+    .final-crown{font-size:48px;text-align:center;margin-bottom:.5rem}
+    .select-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .select-row label{font-size:13px;color:#666;white-space:nowrap;min-width:90px}
+    .select-row select{margin-bottom:0;flex:1}
+    /* 並び替えリスト */
+    .order-item{display:flex;align-items:flex-start;gap:10px;padding:.75rem;border:.5px solid #e0ddd8;border-radius:8px;margin-bottom:6px;background:#fff}
+    .order-num{font-size:13px;font-weight:600;color:#bbb;min-width:20px;padding-top:2px;flex-shrink:0}
+    .order-text{font-size:13px;line-height:1.65;flex:1;color:#333}
+    .order-btns{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+    .arrow-btn{border:.5px solid #ddd;border-radius:4px;background:#faf9f7;cursor:pointer;font-size:12px;padding:2px 7px;color:#666}
+    .arrow-btn:hover{background:#f0ede8}
+    .arrow-btn:disabled{opacity:.25;cursor:not-allowed}
+    /* 個人結果カード */
+    .my-result-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;font-size:13px;border-bottom:.5px solid #e8f0ee}
+    .my-result-label{color:#3a8c55}
+    .my-result-pts{font-weight:600;color:#3a8c55}
+    .my-result-zero{color:#bbb}
+    @media(max-width:380px){.word-big{font-size:30px}.room-code{font-size:34px}}
   </style>
 </head>
 <body>
-<div id="app" style="padding-top:3rem;text-align:center;color:#aaa;">読み込み中...</div>
+<div id="app" style="padding-top:3rem;text-align:center;color:#aaa">読み込み中...</div>
 <script>
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  Firebase 設定
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ━━━ Firebase 設定 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const firebaseConfig = {
   apiKey:            "AIzaSyCyL_8HK6Hqm01ieA6CNpe1geb_1T65Nuo",
   authDomain:        "tahoiya-c1bbf.firebaseapp.com",
@@ -72,454 +100,639 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  ユーティリティ
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ━━━ ユーティリティ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const genId   = () => Math.random().toString(36).substr(2, 9);
 const genCode = () => {
   const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ234679';
-  return Array.from({length:4}, () => c[Math.floor(Math.random()*c.length)]).join('');
+  return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join('');
 };
 const shuffle = arr => {
-  const a = [...arr];
-  for (let i = a.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
   return a;
 };
-// Firebaseは配列をオブジェクトに変換するため、常にこれで正規化する
-const toArr = v => {
-  if (v == null) return [];
-  if (Array.isArray(v)) return v;
-  return Object.values(v);
-};
+const toArr = v => v==null?[]:Array.isArray(v)?v:Object.values(v);
 
-// DOM ヘルパー
 const el = (tag, attrs, ...kids) => {
   const e = document.createElement(tag);
-  if (attrs) {
-    for (const [k, v] of Object.entries(attrs)) {
-      if (k === 'class') e.className = v;
-      else if (k === 'disabled' && v) e.disabled = true;
-      else if (k !== 'disabled') e.setAttribute(k, v);
-    }
+  if(attrs) for(const [k,v] of Object.entries(attrs)){
+    if(k==='class') e.className=v;
+    else if(k==='disabled'&&v) e.disabled=true;
+    else if(k!=='disabled') e.setAttribute(k,v);
   }
-  const add = k => {
-    if (k == null || k === false) return;
-    if (Array.isArray(k)) { k.forEach(add); return; }
-    // 文字列・数値はテキストノードに変換（これをしないとappendChildがクラッシュする）
-    if (typeof k === 'string' || typeof k === 'number') {
-      e.appendChild(document.createTextNode(String(k)));
-    } else {
-      e.appendChild(k);
-    }
+  const add = k=>{
+    if(k==null||k===false) return;
+    if(Array.isArray(k)){k.forEach(add);return;}
+    if(typeof k==='string'||typeof k==='number') e.appendChild(document.createTextNode(String(k)));
+    else e.appendChild(k);
   };
   kids.forEach(add);
   return e;
 };
-const on = (elem, ev, fn) => { elem.addEventListener(ev, fn); return elem; };
+const on=(e,ev,fn)=>{e.addEventListener(ev,fn);return e;};
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  状態
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-let myId     = localStorage.getItem('tahoiya_id') || genId();
-let roomCode = null;
-let roomRef  = null;
-let gs       = null;
+// ━━━ 状態 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let myId     = localStorage.getItem('tahoiya_id')||genId();
+let roomCode = null, roomRef = null, gs = null;
+let pendingOrder = null; // 並び替え中のローカル状態
 localStorage.setItem('tahoiya_id', myId);
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  セレクタ
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const isOya    = () => gs && gs.oyaId === myId;
-const isHost   = () => gs && gs.hostId === myId;
-const players  = () => toArr(gs?.playerOrder).map(id => ({ id, ...gs.players[id] }));
-const children = () => players().filter(p => p.id !== gs.oyaId);
-const myName   = () => gs?.players?.[myId]?.name || '';
-const oya      = () => players().find(p => p.id === gs.oyaId);
+// ━━━ セレクタ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const isOya    = () => gs && gs.oyaId===myId;
+const isHost   = () => gs && gs.hostId===myId;
+const players  = () => toArr(gs?.playerOrder).map(id=>({id,...gs.players[id]}));
+const children = () => players().filter(p=>p.id!==gs.oyaId);
+const myName   = () => gs?.players?.[myId]?.name||'';
+const oya      = () => players().find(p=>p.id===gs.oyaId);
+const dictName = () => gs?.dictName || '辞書';
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  Firebase アクション
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-async function createRoom(name) {
-  const code = genCode();
-  const ref  = db.ref('rooms/' + code);
-  if ((await ref.once('value')).exists()) return createRoom(name);
+// ━━━ Firebase アクション ━━━━━━━━━━━━━━━━━━━━━━━━
+async function createRoom(name,totalRounds,votingMode,dictName){
+  const code=genCode(), ref=db.ref('rooms/'+code);
+  if((await ref.once('value')).exists()) return createRoom(name,totalRounds,votingMode);
   await ref.set({
-    hostId: myId, oyaId: myId,
-    playerOrder: [myId], phase: 'lobby', round: 1,
-    word: '', fakeDefs: {}, shuffled: null, votes: {},
-    scores: { [myId]: 0 },
-    players: { [myId]: { name, joinedAt: Date.now() } }
+    hostId:myId, oyaId:myId, playerOrder:[myId], phase:'lobby',
+    round:1, totalRounds, votingMode, dictName,
+    word:'', fakeDefs:{}, realDef:null, shuffled:null, votes:{},
+    scores:{[myId]:0}, players:{[myId]:{name,joinedAt:Date.now()}}
   });
   subscribe(code);
 }
 
-async function joinRoom(code, name) {
-  const ref  = db.ref('rooms/' + code);
-  const snap = await ref.once('value');
-  if (!snap.exists())                             throw new Error('ルームが見つかりません');
-  const s = snap.val();
-  if (s.phase !== 'lobby')                        throw new Error('ゲームはすでに始まっています');
-  if (Object.keys(s.players || {}).length >= 8)  throw new Error('満員です（最大8人）');
-  if (s.players && s.players[myId])              { subscribe(code); return; }
-  const currentOrder = toArr(s.playerOrder || Object.keys(s.players || {}));
-  await ref.update({
-    ['players/' + myId]: { name, joinedAt: Date.now() },
-    ['scores/'  + myId]: 0,
-    playerOrder: [...currentOrder, myId]
-  });
+async function joinRoom(code,name){
+  const ref=db.ref('rooms/'+code);
+  const snap=await ref.once('value');
+  if(!snap.exists())                           throw new Error('ルームが見つかりません');
+  const s=snap.val();
+  if(s.phase!=='lobby')                        throw new Error('ゲームはすでに始まっています');
+  if(Object.keys(s.players||{}).length>=8)     throw new Error('満員です（最大8人）');
+  if(s.players&&s.players[myId])              {subscribe(code);return;}
+  const order=toArr(s.playerOrder||Object.keys(s.players||{}));
+  await ref.update({['players/'+myId]:{name,joinedAt:Date.now()},['scores/'+myId]:0,playerOrder:[...order,myId]});
   subscribe(code);
 }
 
-function subscribe(code) {
-  if (roomRef) roomRef.off();
-  roomCode = code;
-  roomRef  = db.ref('rooms/' + code);
-  roomRef.on('value', snap => { gs = snap.val(); render(); });
+function subscribe(code){
+  if(roomRef) roomRef.off();
+  roomCode=code; roomRef=db.ref('rooms/'+code);
+  roomRef.on('value',snap=>{gs=snap.val();render();});
 }
 
-const startGame = () => roomRef.update({
-  phase: 'word-input', round: 1,
-  oyaId: players()[0].id, word: '', fakeDefs: {}, shuffled: null, votes: {}
+const startGame=()=>roomRef.update({
+  phase:'word-input', round:1, oyaId:players()[0].id,
+  word:'', fakeDefs:{}, realDef:null, shuffled:null, votes:{}
 });
 
-const submitWord = word => roomRef.update({ word, phase: 'collecting', fakeDefs: {} });
+const confirmWord=word=>roomRef.update({word,phase:'collecting',fakeDefs:{},realDef:null});
+const submitFake=text=>roomRef.child('fakeDefs').update({[myId]:{name:myName(),text}});
+const saveRealDef=text=>roomRef.update({realDef:text});
 
-const submitFake = text => roomRef.child('fakeDefs').update({ [myId]: { name: myName(), text } });
-
-async function submitReal(text) {
-  const fakes = Object.entries(gs.fakeDefs || {}).map(([pid, d]) => ({
-    playerId: pid, name: d.name, text: d.text, isReal: false
-  }));
-  // shuffleした配列をそのまま保存。Firebaseはオブジェクトに変換するが toArr で戻す
-  const all = shuffle([...fakes, { playerId: '__real__', name: '広辞苑', text, isReal: true }]);
-  await roomRef.update({ phase: 'voting', shuffled: all, votes: {} });
+// 並び替え完了 → voting フェーズへ
+async function confirmOrder(orderedDefs){
+  const snap=await roomRef.once('value');
+  if(snap.val().phase!=='ordering') return;
+  await roomRef.update({phase:'voting', shuffled:orderedDefs, votes:{}});
 }
 
-async function submitVote(idx) {
-  // まず自分の票をFirebaseに書く
-  await roomRef.child('votes').update({ [myId]: idx });
+// collecting → ordering フェーズへ
+async function enterOrdering(){
+  const snap=await roomRef.once('value');
+  const state=snap.val();
+  if(state.phase!=='collecting') return;
+  // pendingOrder を初期化（シャッフル）
+  const fakes=Object.entries(state.fakeDefs||{}).map(([pid,d])=>({playerId:pid,name:d.name,text:d.text,isReal:false}));
+  pendingOrder=shuffle([...fakes,{playerId:'__real__',name:dictName(),text:state.realDef,isReal:true}]);
+  await roomRef.update({phase:'ordering'});
+}
 
-  // 全員分の票が揃ったか確認（最新のgsを使う）
-  const kids     = children();
-  const allVotes = Object.assign({}, gs.votes, { [myId]: idx });
-  if (!kids.every(c => allVotes[c.id] !== undefined)) return;
+async function submitVote(idx){
+  await roomRef.child('votes').update({[myId]:idx});
+  const kids=children();
+  const allVotes=Object.assign({},gs.votes,{[myId]:idx});
+  if(!kids.every(c=>allVotes[c.id]!==undefined)) return;
 
-  // スコア計算（全票揃ったクライアントが実行。同値を書くので冪等）
-  const sh  = toArr(gs.shuffled);
-  const ri  = sh.findIndex(d => d.isReal);
-  const sc  = Object.assign({}, gs.scores);
-  let anyOk = false;
-
-  kids.forEach(c => {
-    if (allVotes[c.id] === ri) { sc[c.id] = (sc[c.id] || 0) + 2; anyOk = true; }
+  const sh=toArr(gs.shuffled);
+  const ri=sh.findIndex(d=>d.isReal);
+  const sc=Object.assign({},gs.scores);
+  let anyOk=false;
+  kids.forEach(c=>{
+    if(allVotes[c.id]===ri){sc[c.id]=(sc[c.id]||0)+2;anyOk=true;}
   });
-  sh.forEach((def, i) => {
-    if (!def.isReal) {
-      const vc = Object.values(allVotes).filter(v => v === i).length;
-      if (vc && sc[def.playerId] !== undefined) sc[def.playerId] = (sc[def.playerId] || 0) + vc;
+  sh.forEach((def,i)=>{
+    if(!def.isReal){
+      const vc=Object.values(allVotes).filter(v=>v===i).length;
+      if(vc&&sc[def.playerId]!==undefined) sc[def.playerId]=(sc[def.playerId]||0)+vc;
     }
   });
-  if (!anyOk && sc[gs.oyaId] !== undefined) sc[gs.oyaId] = (sc[gs.oyaId] || 0) + 2;
-
-  await roomRef.update({ phase: 'results', scores: sc, votes: allVotes });
+  if(!anyOk&&sc[gs.oyaId]!==undefined) sc[gs.oyaId]=(sc[gs.oyaId]||0)+2;
+  const nextPhase=(gs.round>=gs.totalRounds)?'final':'results';
+  await roomRef.update({phase:nextPhase,scores:sc,votes:allVotes});
 }
 
-async function nextRound() {
-  const ps  = players();
-  const ni  = (ps.findIndex(p => p.id === gs.oyaId) + 1) % ps.length;
+async function nextRound(){
+  const ps=players();
+  const ni=(ps.findIndex(p=>p.id===gs.oyaId)+1)%ps.length;
   await roomRef.update({
-    phase: 'word-input', round: (gs.round || 1) + 1,
-    oyaId: ps[ni].id, word: '', fakeDefs: {}, shuffled: null, votes: {}
+    phase:'word-input', round:(gs.round||1)+1, oyaId:ps[ni].id,
+    word:'', fakeDefs:{}, realDef:null, shuffled:null, votes:{}
   });
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  レンダリング
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function render() {
-  const app = document.getElementById('app');
-  // style をリセット
+async function extendGame(n){
+  await roomRef.update({totalRounds:(gs.totalRounds||0)+n});
+  await nextRound();
+}
+
+// ━━━ レンダリング ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function render(){
+  const app=document.getElementById('app');
   app.removeAttribute('style');
-
-  if (!roomCode || !gs) { app.innerHTML = ''; app.appendChild(renderHome()); return; }
-
-  try {
-    const screens = { lobby: renderLobby, 'word-input': renderWordInput, collecting: renderCollecting, voting: renderVoting, results: renderResults };
-    const screen  = (screens[gs.phase] || renderLobby)();
-    app.innerHTML = '';
-    app.appendChild(screen);
-  } catch (err) {
-    // デバッグ用：エラーを画面に表示
-    app.innerHTML = '<p style="color:red;padding:2rem;font-size:13px;">エラー: ' + err.message + '<br><pre>' + err.stack + '</pre></p>';
+  if(!roomCode||!gs){app.innerHTML='';app.appendChild(renderHome());return;}
+  try{
+    const screens={
+      lobby:renderLobby,'word-input':renderWordInput,
+      collecting:renderCollecting,ordering:renderOrdering,
+      voting:renderVoting,results:renderResults,final:renderFinal
+    };
+    const screen=(screens[gs.phase]||renderLobby)();
+    app.innerHTML=''; app.appendChild(screen);
+  }catch(err){
+    app.innerHTML='<p style="color:red;padding:2rem;font-size:12px;white-space:pre-wrap">エラー: '+err.message+'\n'+err.stack+'</p>';
     console.error(err);
   }
 }
 
-// ── ホーム ──────────────────────────────────────────
-function renderHome() {
-  const wrap = el('div');
-  wrap.appendChild(el('div', { style: 'margin-bottom:2rem;' },
-    el('h1', { class: 'logo', style: 'margin-bottom:4px;' }, 'たほいや'),
-    el('p',  { style: 'font-size:12px;color:#aaa;' }, '広辞苑を使った言葉遊び　3〜8人')
+// ── ホーム ───────────────────────────────────────
+function renderHome(){
+  const wrap=el('div');
+  wrap.appendChild(el('div',{style:'margin-bottom:2rem'},
+    el('h1',{class:'logo',style:'margin-bottom:4px'},'たほいや'),
+    el('p',{style:'font-size:12px;color:#aaa'},'辞書を使った言葉遊び　3〜8人')
   ));
-
-  // ルーム作成
-  const cErr = el('p', { class: 'err' });
-  const cIn  = el('input', { type: 'text', placeholder: '自分の名前を入力...' });
-  const cBtn = on(el('button', { class: 'btn btn-p' }, 'ルームを作る（最初の親になる）'), 'click', async () => {
-    const name = cIn.value.trim();
-    if (!name) { cErr.textContent = '名前を入力してください'; return; }
-    cBtn.disabled = true; cBtn.textContent = '作成中...';
-    try { await createRoom(name); }
-    catch(e) { cErr.textContent = e.message; cBtn.disabled = false; cBtn.textContent = 'ルームを作る'; }
+  const cErr=el('p',{class:'err'}), cIn=el('input',{type:'text',placeholder:'自分の名前を入力...'});
+  const cBtn=on(el('button',{class:'btn btn-p'},'ルームを作る（最初の親になる）'),'click',async()=>{
+    if(!cIn.value.trim()){cErr.textContent='名前を入力してください';return;}
+    cBtn.disabled=true; cBtn.textContent='作成中...';
+    try{await createRoom(cIn.value.trim(),3,'text','辞書');}
+    catch(e){cErr.textContent=e.message;cBtn.disabled=false;cBtn.textContent='ルームを作る';}
   });
-  wrap.appendChild(el('div', { class: 'card' },
-    el('p', { class: 'role-label' }, '新しいゲームを始める'),
-    el('p', { class: 'section-title' }, 'ルームを作る'),
-    cIn, cErr, cBtn
-  ));
-
-  // ルーム参加
-  const jErr  = el('p', { class: 'err' });
-  const jName = el('input', { type: 'text', placeholder: '自分の名前...' });
-  const jCode = el('input', { type: 'text', placeholder: 'ルームコード（例：ABCD）', style: 'text-transform:uppercase;letter-spacing:0.15em;font-size:18px;' });
-  jCode.addEventListener('input', () => { jCode.value = jCode.value.toUpperCase(); });
-  const jBtn = on(el('button', { class: 'btn' }, 'ルームに参加する'), 'click', async () => {
-    const name = jName.value.trim();
-    const code = jCode.value.trim();
-    if (!name)           { jErr.textContent = '名前を入力してください'; return; }
-    if (code.length < 4) { jErr.textContent = 'ルームコードは4文字です'; return; }
-    jBtn.disabled = true; jBtn.textContent = '参加中...';
-    try { await joinRoom(code, name); }
-    catch(e) { jErr.textContent = e.message; jBtn.disabled = false; jBtn.textContent = 'ルームに参加する'; }
+  wrap.appendChild(el('div',{class:'card'},el('p',{class:'role-label'},'新しいゲームを始める'),el('p',{class:'section-title'},'ルームを作る'),cIn,cErr,cBtn));
+  const jErr=el('p',{class:'err'}), jName=el('input',{type:'text',placeholder:'自分の名前...'}),
+        jCode=el('input',{type:'text',placeholder:'ルームコード（例：ABCD）',style:'text-transform:uppercase;letter-spacing:.15em;font-size:18px'});
+  jCode.addEventListener('input',()=>{jCode.value=jCode.value.toUpperCase();});
+  const jBtn=on(el('button',{class:'btn'},'ルームに参加する'),'click',async()=>{
+    if(!jName.value.trim()){jErr.textContent='名前を入力してください';return;}
+    if(jCode.value.trim().length<4){jErr.textContent='ルームコードは4文字です';return;}
+    jBtn.disabled=true; jBtn.textContent='参加中...';
+    try{await joinRoom(jCode.value.trim(),jName.value.trim());}
+    catch(e){jErr.textContent=e.message;jBtn.disabled=false;jBtn.textContent='ルームに参加する';}
   });
-  wrap.appendChild(el('div', { class: 'card' },
-    el('p', { class: 'role-label' }, '既存のルームに入る'),
-    el('p', { class: 'section-title' }, 'ルームに参加'),
-    jName, jCode, jErr, jBtn
-  ));
-  wrap.appendChild(el('div', { class: 'rules-card' },
-    '親が広辞苑から難しい言葉を選び、子それぞれがそれっぽい嘘の定義を考えます。', el('br'), el('br'),
-    '本物を当てたら +2点　／　嘘定義に票が入ったら +1点/票　／　誰も正解しなければ親 +2点'
-  ));
+  wrap.appendChild(el('div',{class:'card'},el('p',{class:'role-label'},'既存のルームに入る'),el('p',{class:'section-title'},'ルームに参加'),jName,jCode,jErr,jBtn));
+  wrap.appendChild(el('div',{class:'rules-card'},'親が辞書から難しい言葉を選び、子それぞれがそれっぽい嘘の定義を考えます。',el('br'),el('br'),'本物を当てたら +2点　／　嘘定義に票が入ったら +1点/票　／　誰も正解しなければ親 +2点'));
   return wrap;
 }
 
-// ── ロビー ──────────────────────────────────────────
-function renderLobby() {
-  const ps   = players();
-  const wrap = el('div');
+// ── ロビー ───────────────────────────────────────
+function renderLobby(){
+  const ps=players(), wrap=el('div');
   wrap.appendChild(hdr('ロビー'));
-  wrap.appendChild(el('div', { class: 'card', style: 'text-align:center;' },
-    el('p',   { style: 'font-size:12px;color:#aaa;margin-bottom:4px;' }, 'ルームコード'),
-    el('div', { class: 'room-code' }, roomCode),
-    el('p',   { style: 'font-size:12px;color:#ccc;' }, 'このコードを参加者に伝えてください')
+  wrap.appendChild(el('div',{class:'card',style:'text-align:center'},
+    el('p',{style:'font-size:12px;color:#aaa;margin-bottom:4px'},'ルームコード'),
+    el('div',{class:'room-code'},roomCode),
+    el('p',{style:'font-size:12px;color:#ccc'},'このコードを参加者に伝えてください')
   ));
-  wrap.appendChild(el('div', { class: 'card' },
-    el('p', { class: 'role-label' }, '参加者　' + ps.length + '人'),
-    ...ps.map(p => el('div', { class: 'player-row' },
-      el('span', {}, p.name,
-        p.id === myId      ? el('span', { class: 'tag tag-me' }, 'あなた') : null,
-        p.id === gs.hostId ? el('span', { class: 'tag tag-oya' }, 'GM') : null
-      ),
-      el('span', { style: 'color:#ccc;font-size:12px;' }, '✓')
+  wrap.appendChild(el('div',{class:'card'},
+    el('p',{class:'role-label'},'参加者　'+ps.length+'人'),
+    ...ps.map(p=>el('div',{class:'player-row'},
+      el('span',{},p.name,
+        p.id===myId?el('span',{class:'tag tag-me'},'あなた'):null,
+        p.id===gs.hostId?el('span',{class:'tag tag-oya'},'GM'):null),
+      el('span',{style:'color:#ccc;font-size:12px'},'✓')
     ))
   ));
-  if (isHost()) {
-    wrap.appendChild(on(el('button', {
-      class: 'btn btn-p',
-      disabled: ps.length < 3
-    }, ps.length < 3 ? 'あと' + (3 - ps.length) + '人必要' : 'ゲームスタート（' + ps.length + '人）'), 'click', startGame));
-  } else {
-    wrap.appendChild(el('p', { class: 'muted' }, 'ゲームマスターがスタートするのを待っています...'));
-  }
-  return wrap;
-}
+  if(isHost()){
+    const dictInp=el('input',{type:'text',placeholder:'例：広辞苑、Oxford Dictionary...',style:'margin-bottom:0'});
+    dictInp.value=gs.dictName||'';
+    dictInp.addEventListener('change',()=>{
+      if(dictInp.value.trim()) roomRef.update({dictName:dictInp.value.trim()});
+    });
+    const rSel=el('select');
+    [3,5,7,10].forEach(n=>{
+      const o=el('option',{value:String(n)},String(n)+' ラウンド');
+      if(n===(gs.totalRounds||3)) o.selected=true;
+      rSel.appendChild(o);
+    });
+    rSel.addEventListener('change',()=>roomRef.update({totalRounds:parseInt(rSel.value)}));
 
-// ── 言葉入力（親） ──────────────────────────────────
-function renderWordInput() {
-  const wrap = el('div');
-  wrap.appendChild(hdr('第' + gs.round + 'ラウンド'));
-  if (isOya()) {
-    let w = '';
-    const inp = el('input', { type: 'text', placeholder: '例：みやびやか、くぐつ...' });
-    inp.addEventListener('input', e => { w = e.target.value; });
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter' && w.trim()) submitWord(w.trim()); });
-    wrap.appendChild(el('div', { class: 'card' },
-      el('p', { class: 'role-label' }, '親：' + (oya()?.name || '')),
-      el('p', { class: 'section-title' }, '言葉を入力してください'),
-      el('p', { class: 'section-note' }, '広辞苑から難しい言葉を選んで入力。他の人はまだ見ていません。'),
-      inp,
-      on(el('button', { class: 'btn btn-p' }, '言葉を公開する　→'), 'click', () => { if (w.trim()) submitWord(w.trim()); })
+    const mSel=el('select');
+    [['text','テキスト表示（各自が読む）'],['readout','親が読み上げ（子はボタンのみ）']].forEach(([v,l])=>{
+      const o=el('option',{value:v},l);
+      if(v===(gs.votingMode||'text')) o.selected=true;
+      mSel.appendChild(o);
+    });
+    mSel.addEventListener('change',()=>roomRef.update({votingMode:mSel.value}));
+
+    wrap.appendChild(el('div',{class:'card'},
+      el('p',{class:'role-label'},'ゲーム設定'),
+      el('div',{class:'select-row'},el('label',{},'使う辞書'),dictInp),
+      el('div',{class:'select-row'},el('label',{},'ラウンド数'),rSel),
+      el('div',{class:'select-row'},el('label',{},'投票モード'),mSel),
+      on(el('button',{class:'btn btn-p',disabled:ps.length<3},
+        ps.length<3?'あと'+(3-ps.length)+'人必要':'ゲームスタート（'+ps.length+'人）'),'click',startGame)
     ));
-  } else {
-    wrap.appendChild(waiting('📖', oya()?.name || '', '広辞苑から言葉を選んでいます...'));
+  }else{
+    const mLabel={'text':'テキスト表示','readout':'親が読み上げ'}[gs.votingMode||'text'];
+    wrap.appendChild(el('div',{class:'card'},
+      el('p',{class:'role-label'},'設定'),
+      el('p',{style:'font-size:13px;color:#888'},'辞書：'+(gs.dictName||'未設定')+'　'+gs.totalRounds+'ラウンド　投票：'+mLabel)
+    ));
+    wrap.appendChild(el('p',{class:'muted'},'ゲームマスターがスタートするのを待っています...'));
   }
   return wrap;
 }
 
-// ── 嘘定義収集 ──────────────────────────────────────
-function renderCollecting() {
-  const wrap  = el('div');
-  const kids  = children();
-  const fakes = gs.fakeDefs || {};
-  const done  = Object.keys(fakes).length;
-  const allIn = done >= kids.length;
+// ── 言葉入力（親） ──────────────────────────────
+function renderWordInput(){
+  const wrap=el('div');
+  wrap.appendChild(hdr('第'+gs.round+' / '+gs.totalRounds+' ラウンド'));
+  if(isOya()){
+    let draft='';
+    const inputArea=el('div'), previewArea=el('div',{style:'display:none'});
+    const inp=el('input',{type:'text',placeholder:'例：みやびやか、くぐつ...'});
+    inp.addEventListener('input',e=>{draft=e.target.value;});
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter') e.preventDefault();});
+    const wordPreview=el('div',{class:'word-confirm'},'');
+    on(el('button',{class:'btn btn-p'},'確認する　→'),'click',()=>{
+      if(!draft.trim()) return;
+      wordPreview.textContent=draft.trim();
+      inputArea.style.display='none'; previewArea.style.display='';
+    });
+    inputArea.appendChild(el('p',{class:'role-label'},'親：'+(oya()?.name||'')));
+    inputArea.appendChild(el('p',{class:'section-title'},'言葉を入力してください'));
+    inputArea.appendChild(el('p',{class:'section-note'},'辞書から難しい言葉を選んで入力。Enterキーは無効です。確認画面が出ます。'));
+    inputArea.appendChild(inp);
+    inputArea.appendChild(el('button',{class:'btn btn-p'},'確認する　→'));
+    // ボタン再追加（クロージャのため）
+    inputArea.innerHTML=''; // reset
+    const toPreviewBtn=on(el('button',{class:'btn btn-p'},'確認する　→'),'click',()=>{
+      if(!draft.trim()) return;
+      wordPreview.textContent=draft.trim();
+      inputArea.style.display='none'; previewArea.style.display='';
+    });
+    inputArea.appendChild(el('p',{class:'role-label'},'親：'+(oya()?.name||'')));
+    inputArea.appendChild(el('p',{class:'section-title'},'言葉を入力してください'));
+    inputArea.appendChild(el('p',{class:'section-note'},'辞書から難しい言葉を選んで入力。Enterキーは無効です。'));
+    inputArea.appendChild(inp);
+    inputArea.appendChild(toPreviewBtn);
 
-  wrap.appendChild(hdr('第' + gs.round + 'ラウンド'));
-  wrap.appendChild(el('div', { class: 'card' }, el('div', { class: 'word-big' }, gs.word)));
+    const backBtn=on(el('button',{class:'btn'},'← 書き直す'),'click',()=>{
+      inputArea.style.display=''; previewArea.style.display='none'; inp.value=draft; inp.focus();
+    });
+    const okBtn=on(el('button',{class:'btn btn-p'},'これで決定'),'click',()=>{if(draft.trim()) confirmWord(draft.trim());});
+    previewArea.appendChild(el('p',{class:'role-label'},'この言葉でよいですか？'));
+    previewArea.appendChild(wordPreview);
+    previewArea.appendChild(el('hr',{class:'divhr'}));
+    previewArea.appendChild(el('div',{class:'btn-row'},backBtn,okBtn));
+    wrap.appendChild(el('div',{class:'card'},inputArea,previewArea));
+  }else{
+    wrap.appendChild(waiting('📖',oya()?.name||'','辞書から言葉を選んでいます...'));
+  }
+  return wrap;
+}
 
-  if (isOya()) {
-    const content = [
-      el('p', { class: 'role-label' }, '親：' + (oya()?.name || '')),
-      el('p', { class: 'section-title' }, '子が定義を考えています'),
-      el('div', { class: 'prog-bar' }, ...kids.map(c => el('div', { class: 'prog-dot' + (fakes[c.id] ? ' done' : '') }))),
-      el('p', { style: 'font-size:13px;color:#888;' }, done + ' / ' + kids.length + ' 人が提出しました'),
-    ];
-    if (allIn) {
-      let r = '';
-      const inp = el('textarea', { placeholder: '広辞苑の定義をそのまま入力...' });
-      inp.addEventListener('input', e => { r = e.target.value; });
+// ── 嘘定義収集（並行入力） ──────────────────────
+function renderCollecting(){
+  const wrap=el('div');
+  const kids=children(), fakes=gs.fakeDefs||{};
+  const doneCount=Object.keys(fakes).length;
+  const allFakesDone=doneCount>=kids.length, hasReal=!!gs.realDef;
+  const canStart=allFakesDone&&hasReal;
+
+  wrap.appendChild(hdr('第'+gs.round+' / '+gs.totalRounds+' ラウンド'));
+  wrap.appendChild(el('div',{class:'card'},el('div',{class:'word-big'},gs.word)));
+
+  if(isOya()){
+    const content=[];
+    if(!hasReal){
+      let r='';
+      const inp=el('textarea',{placeholder:'辞書の定義をそのまま入力...'});
+      inp.addEventListener('input',e=>{r=e.target.value;});
       content.push(
-        el('hr', { class: 'divhr', style: 'margin-top:1rem;' }),
-        el('p', { style: 'font-size:13px;color:#3a8c55;margin-bottom:0.75rem;' }, '✓ 全員提出しました！本物の定義を入力してください。'),
+        el('p',{class:'role-label'},'親：'+(oya()?.name||'')),
+        el('p',{class:'section-title'},'本物の定義を入力してください'),
+        el('p',{class:'section-note'},'子が嘘の定義を入力している間に、先に辞書の定義を入力しておけます。'),
         inp,
-        on(el('button', { class: 'btn btn-p', style: 'margin-top:2px;' }, '定義を公開する　→'), 'click', () => { if (r.trim()) submitReal(r.trim()); })
+        on(el('button',{class:'btn btn-p'},'保存する'),'click',()=>{if(r.trim()) saveRealDef(r.trim());})
+      );
+    }else{
+      content.push(
+        el('p',{class:'role-label'},'親：'+(oya()?.name||'')),
+        el('span',{class:'submitted'},'✓ 本物の定義を保存しました')
       );
     }
-    wrap.appendChild(el('div', { class: 'card' }, ...content));
-  } else if (fakes[myId]) {
-    const odone = kids.filter(c => fakes[c.id]).length;
-    wrap.appendChild(el('div', { class: 'card' },
-      el('div', { style: 'text-align:center;padding:0.5rem 0 1rem;' }, el('span', { class: 'submitted' }, '✓ 提出済み')),
-      el('p', { style: 'font-size:13px;color:#aaa;text-align:center;' }, '他の人の提出を待っています（' + odone + ' / ' + kids.length + '人）'),
-      allIn ? el('p', { style: 'font-size:13px;color:#888;text-align:center;margin-top:0.75rem;' }, '親が本物の定義を入力中...') : null
+    content.push(
+      el('hr',{class:'divhr'}),
+      el('p',{style:'font-size:13px;color:#888;margin-bottom:.5rem'},'子の提出状況'),
+      el('div',{class:'prog-bar'},...kids.map(c=>el('div',{class:'prog-dot'+(fakes[c.id]?' done':'')}))),
+      el('p',{style:'font-size:13px;color:#888'},doneCount+' / '+kids.length+' 人が提出しました')
+    );
+    if(canStart){
+      content.push(
+        el('hr',{class:'divhr'}),
+        el('p',{class:'notice-green'},'✓ 全員の定義が揃いました！'),
+        on(el('button',{class:'btn btn-p'},'選択肢の順番を決める　→'),'click',enterOrdering)
+      );
+    }
+    wrap.appendChild(el('div',{class:'card'},...content));
+  }else if(fakes[myId]){
+    wrap.appendChild(el('div',{class:'card'},
+      el('div',{style:'text-align:center;padding:.5rem 0 1rem'},el('span',{class:'submitted'},'✓ 提出済み')),
+      el('p',{style:'font-size:13px;color:#aaa;text-align:center'},'他の人の提出を待っています（'+doneCount+' / '+kids.length+'人）'),
+      canStart?el('p',{style:'font-size:13px;color:#888;text-align:center;margin-top:.75rem'},'親が順番を決めています...'):null
     ));
-  } else {
-    let f = '';
-    const inp = el('textarea', { placeholder: 'それっぽいけど偽物の定義を書いてください...' });
-    inp.addEventListener('input', e => { f = e.target.value; });
-    wrap.appendChild(el('div', { class: 'card' },
-      el('p', { class: 'role-label' }, '子：' + myName()),
-      el('p', { class: 'section-title' }, '嘘の定義を考えてください'),
-      el('p', { class: 'section-note' }, 'それっぽいけど偽物の定義を入力。他の人には見えません。'),
+  }else{
+    let f='';
+    const inp=el('textarea',{placeholder:'それっぽいけど偽物の定義を書いてください...'});
+    inp.addEventListener('input',e=>{f=e.target.value;});
+    wrap.appendChild(el('div',{class:'card'},
+      el('p',{class:'role-label'},'子：'+myName()),
+      el('p',{class:'section-title'},'嘘の定義を考えてください'),
+      el('p',{class:'section-note'},'それっぽいけど偽物の定義を入力。他の人には見えません。'),
       inp,
-      on(el('button', { class: 'btn btn-p' }, '提出　→'), 'click', () => { if (f.trim()) submitFake(f.trim()); })
+      on(el('button',{class:'btn btn-p'},'提出　→'),'click',()=>{if(f.trim()) submitFake(f.trim());})
     ));
   }
   return wrap;
 }
 
-// ── 投票 ──────────────────────────────────────────────
-function renderVoting() {
-  const wrap  = el('div');
-  const sh    = toArr(gs.shuffled);   // Firebaseのオブジェクト→配列に変換
-  const vs    = gs.votes || {};
-  const kids  = children();
-  const vdone = kids.filter(c => vs[c.id] !== undefined).length;
+// ── 並び替えフェーズ（親のみ） ────────────────────
+function renderOrdering(){
+  const wrap=el('div');
+  wrap.appendChild(hdr('第'+gs.round+' / '+gs.totalRounds+' ラウンド'));
+  wrap.appendChild(el('div',{class:'card'},el('div',{class:'word-big'},gs.word)));
 
-  wrap.appendChild(hdr('第' + gs.round + 'ラウンド'));
-  wrap.appendChild(el('div', { class: 'card' }, el('div', { class: 'word-big' }, gs.word)));
+  if(isOya()){
+    // pendingOrder が空なら初期化（ページリロード対策）
+    if(!pendingOrder||pendingOrder.length===0){
+      const fakes=Object.entries(gs.fakeDefs||{}).map(([pid,d])=>({playerId:pid,name:d.name,text:d.text,isReal:false}));
+      pendingOrder=shuffle([...fakes,{playerId:'__real__',name:dictName(),text:gs.realDef,isReal:true}]);
+    }
 
-  if (isOya()) {
-    wrap.appendChild(el('div', { class: 'card' },
-      el('p', { class: 'role-label' }, '親：' + (oya()?.name || '')),
-      el('p', { class: 'section-title' }, '子が本物を選んでいます'),
-      el('div', { class: 'prog-bar' }, ...kids.map(c => el('div', { class: 'prog-dot' + (vs[c.id] !== undefined ? ' done' : '') }))),
-      el('p', { style: 'font-size:13px;color:#888;' }, vdone + ' / ' + kids.length + ' 人が投票しました')
+    const listEl=el('div');
+    const redraw=()=>{
+      listEl.innerHTML='';
+      pendingOrder.forEach((def,i)=>{
+        const upBtn=on(el('button',{class:'arrow-btn',disabled:i===0},'↑'),'click',()=>{
+          [pendingOrder[i-1],pendingOrder[i]]=[pendingOrder[i],pendingOrder[i-1]]; redraw();
+        });
+        const dnBtn=on(el('button',{class:'arrow-btn',disabled:i===pendingOrder.length-1},'↓'),'click',()=>{
+          [pendingOrder[i+1],pendingOrder[i]]=[pendingOrder[i],pendingOrder[i+1]]; redraw();
+        });
+        listEl.appendChild(el('div',{class:'order-item'},
+          el('span',{class:'order-num'},String(i+1)),
+          el('span',{class:'order-text'},def.text),
+          el('div',{class:'order-btns'},upBtn,dnBtn)
+        ));
+      });
+    };
+    redraw();
+
+    const shuffleBtn=on(el('button',{class:'btn'},'ランダムにシャッフル'),'click',()=>{
+      pendingOrder=shuffle(pendingOrder); redraw();
+    });
+    const startBtn=on(el('button',{class:'btn btn-p',style:'margin-top:10px'},'この順番で投票を開始　→'),'click',()=>{
+      confirmOrder([...pendingOrder]);
+    });
+
+    wrap.appendChild(el('div',{class:'card'},
+      el('p',{class:'role-label'},'親：'+(oya()?.name||'')),
+      el('p',{class:'section-title'},'選択肢の順番を決めてください'),
+      el('p',{class:'section-note'},'↑↓で並び替え。ランダムにシャッフルも可能。'),
+      listEl,
+      shuffleBtn, startBtn
     ));
-  } else if (vs[myId] !== undefined) {
-    wrap.appendChild(el('div', { class: 'card' },
-      el('div', { style: 'text-align:center;padding:0.5rem 0 1rem;' }, el('span', { class: 'submitted' }, '✓ 投票済み')),
-      el('p', { style: 'font-size:13px;color:#aaa;text-align:center;' }, '他の人の投票を待っています（' + vdone + ' / ' + kids.length + '人）')
-    ));
-  } else {
-    wrap.appendChild(el('div', { class: 'card' },
-      el('p', { class: 'role-label' }, '子：' + myName()),
-      el('p', { class: 'section-title', style: 'margin-bottom:1rem;' }, '本物の定義はどれ？'),
-      ...sh.map((def, i) =>
-        on(el('button', { class: 'def-btn' },
-          el('span', { class: 'def-num' }, String(i + 1)),
-          el('span', { class: 'def-text' }, def.text)
-        ), 'click', () => submitVote(i))
-      )
-    ));
+  }else{
+    wrap.appendChild(waiting('🔀',oya()?.name||'','選択肢の順番を決めています...'));
   }
   return wrap;
 }
 
-// ── 結果 ──────────────────────────────────────────────
-function renderResults() {
-  const wrap   = el('div');
-  const sh     = toArr(gs.shuffled);   // Firebaseのオブジェクト→配列に変換
-  const vs     = gs.votes || {};
-  const sc     = gs.scores || {};
-  const ps     = players();
-  const kids   = children();
-  const sorted = [...ps].sort((a, b) => (sc[b.id] || 0) - (sc[a.id] || 0));
+// ── 投票 ──────────────────────────────────────────
+function renderVoting(){
+  const wrap=el('div');
+  const sh=toArr(gs.shuffled), vs=gs.votes||{};
+  const kids=children(), vdone=kids.filter(c=>vs[c.id]!==undefined).length;
+  const mode=gs.votingMode||'text';
 
-  wrap.appendChild(hdr('第' + gs.round + 'ラウンド　答え合わせ'));
+  wrap.appendChild(hdr('第'+gs.round+' / '+gs.totalRounds+' ラウンド'));
+  wrap.appendChild(el('div',{class:'card'},el('div',{class:'word-big'},gs.word)));
 
-  // 定義一覧（正解・投票者付き）
-  wrap.appendChild(el('div', { class: 'card' },
-    el('p',   { class: 'role-label', style: 'margin-bottom:0.5rem;' }, 'お題'),
-    el('div', { class: 'word-big', style: 'font-size:26px;padding:0.5rem 0;' }, gs.word),
-    el('hr',  { class: 'divhr' }),
-    ...sh.map((def, i) => {
-      const voters = kids.filter(c => vs[c.id] === i).map(c => c.name);
-      return el('div', { class: 'def-result' + (def.isReal ? ' real' : '') },
-        el('span', { class: 'def-num' }, String(i + 1)),
-        el('div', { style: 'flex:1;' },
-          el('div', { class: 'def-text' }, def.text),
-          el('div', { class: 'def-meta' + (def.isReal ? ' real' : '') },
-            def.isReal ? '✓ 本物（広辞苑）' : (def.name + 'の回答'),
-            ...voters.map(n => el('span', { class: 'vote-chip' }, n))
+  if(isOya()){
+    const content=[
+      el('p',{class:'role-label'},'親：'+(oya()?.name||'')),
+      el('p',{class:'section-title'},mode==='readout'?'定義を読み上げてください':'子が本物を選んでいます'),
+      el('div',{class:'prog-bar'},...kids.map(c=>el('div',{class:'prog-dot'+(vs[c.id]!==undefined?' done':'')}))),
+      el('p',{style:'font-size:13px;color:#888'},vdone+' / '+kids.length+' 人が投票しました')
+    ];
+    if(mode==='readout'){
+      // 親は全テキストを見る
+      content.push(el('hr',{class:'divhr'}));
+      sh.forEach((def,i)=>{
+        content.push(el('div',{style:'margin-bottom:10px'},
+          el('span',{style:'font-size:12px;font-weight:600;color:#bbb;margin-right:8px'},String(i+1)+'.'),
+          el('span',{style:'font-size:14px;line-height:1.7;color:#333'},def.text)
+        ));
+      });
+    }
+    wrap.appendChild(el('div',{class:'card'},...content));
+  }else if(vs[myId]!==undefined){
+    wrap.appendChild(el('div',{class:'card'},
+      el('div',{style:'text-align:center;padding:.5rem 0 1rem'},el('span',{class:'submitted'},'✓ 投票済み')),
+      el('p',{style:'font-size:13px;color:#aaa;text-align:center'},'他の人の投票を待っています（'+vdone+' / '+kids.length+'人）')
+    ));
+  }else{
+    if(mode==='readout'){
+      // テキストなし、番号ボタンのみ
+      wrap.appendChild(el('div',{class:'card'},
+        el('p',{class:'role-label'},'子：'+myName()),
+        el('p',{class:'section-title',style:'margin-bottom:1rem'},'親の読み上げを聞いて選んでください'),
+        ...sh.map((_,i)=>on(el('button',{class:'num-btn'},String(i+1)),'click',()=>submitVote(i)))
+      ));
+    }else{
+      wrap.appendChild(el('div',{class:'card'},
+        el('p',{class:'role-label'},'子：'+myName()),
+        el('p',{class:'section-title',style:'margin-bottom:1rem'},'本物の定義はどれ？'),
+        ...sh.map((def,i)=>on(el('button',{class:'def-btn'},
+          el('span',{class:'def-num'},String(i+1)),
+          el('span',{class:'def-text'},def.text)
+        ),'click',()=>submitVote(i)))
+      ));
+    }
+  }
+  return wrap;
+}
+
+// ── ラウンド結果 ──────────────────────────────────
+function renderResults(){
+  const wrap=el('div');
+  const sh=toArr(gs.shuffled), vs=gs.votes||{}, sc=gs.scores||{};
+  const ps=players(), kids=children();
+  const ri=sh.findIndex(d=>d.isReal);
+  const sorted=[...ps].sort((a,b)=>(sc[b.id]||0)-(sc[a.id]||0));
+
+  wrap.appendChild(hdr('第'+gs.round+' / '+gs.totalRounds+' ラウンド　答え合わせ'));
+
+  // ── 個人結果カード ──
+  const myDef=sh.find(d=>d.playerId===myId);
+  const myVote=vs[myId];
+  const myCard=isOya() ? renderOyaResult(sh,vs,kids,ri,sc) : renderKoResult(myDef,myVote,ri,kids,vs,sc);
+  wrap.appendChild(myCard);
+
+  // ── 全定義一覧 ──
+  wrap.appendChild(el('div',{class:'card'},
+    el('p',{class:'role-label',style:'margin-bottom:.5rem'},'お題'),
+    el('div',{class:'word-big',style:'font-size:26px;padding:.5rem 0'},gs.word),
+    el('hr',{class:'divhr'}),
+    ...sh.map((def,i)=>{
+      const voters=kids.filter(c=>vs[c.id]===i).map(c=>c.name);
+      return el('div',{class:'def-result'+(def.isReal?' real':'')},
+        el('span',{class:'def-num'},String(i+1)),
+        el('div',{style:'flex:1'},
+          el('div',{class:'def-text'},def.text),
+          el('div',{class:'def-meta'+(def.isReal?' real':'')},
+            def.isReal?'✓ 本物（'+dictName()+'）':(def.name+'の回答'),
+            ...voters.map(n=>el('span',{class:'vote-chip'},n))
           )
         )
       );
     })
   ));
 
-  // スコア
-  wrap.appendChild(el('div', { class: 'card' },
-    el('p', { class: 'role-label', style: 'margin-bottom:1rem;' }, 'スコア'),
-    ...sorted.map((p, i) =>
-      el('div', { class: 'score-row' },
-        el('span', { class: 'score-name' },
-          String(i + 1) + '.　' + p.name,
-          p.id === myId     ? el('span', { class: 'tag tag-me' }, 'あなた') : null,
-          p.id === gs.oyaId ? el('span', { class: 'tag tag-oya' }, '親') : null
-        ),
-        el('span', { style: 'font-size:20px;font-weight:500;' }, String(sc[p.id] || 0))
-      )
-    )
+  // ── スコア一覧 ──
+  wrap.appendChild(el('div',{class:'card'},
+    el('p',{class:'role-label',style:'margin-bottom:1rem'},'現在のスコア'),
+    ...sorted.map((p,i)=>el('div',{class:'score-row'},
+      el('span',{class:'score-rank'},String(i+1)),
+      el('span',{class:'score-name'},p.name,
+        p.id===myId?el('span',{class:'tag tag-me'},'あなた'):null,
+        p.id===gs.oyaId?el('span',{class:'tag tag-oya'},'親'):null
+      ),
+      el('span',{class:'score-pt'},String(sc[p.id]||0))
+    ))
   ));
 
-  if (isHost()) {
-    wrap.appendChild(on(el('button', { class: 'btn btn-p', style: 'margin-top:4px;' }, '次のラウンドへ　→'), 'click', nextRound));
-  } else {
-    wrap.appendChild(el('p', { class: 'muted' }, 'ゲームマスターが次のラウンドを始めるのを待っています'));
+  if(isHost()){
+    wrap.appendChild(on(el('button',{class:'btn btn-p',style:'margin-top:4px'},'次のラウンドへ　→'),'click',nextRound));
+  }else{
+    wrap.appendChild(el('p',{class:'muted'},'ゲームマスターが次のラウンドを始めるのを待っています'));
   }
   return wrap;
 }
 
-// ── サブコンポーネント ──────────────────────────────
-function hdr(badge) {
-  return el('div', { class: 'header' },
-    el('span', { class: 'logo' }, 'たほいや'),
-    el('span', { class: 'badge' }, badge)
+function renderKoResult(myDef,myVote,ri,kids,vs,sc){
+  const rows=[];
+  // 自分の定義に何人騙されたか
+  if(myDef){
+    const sh=toArr(gs.shuffled);
+    const myDefIdx=sh.findIndex(d=>d.playerId===myId);
+    const fooled=kids.filter(c=>vs[c.id]===myDefIdx&&c.id!==myId);
+    if(fooled.length>0){
+      rows.push(el('div',{class:'my-result-row'},
+        el('span',{class:'my-result-label'},'あなたの嘘定義　→　'+fooled.map(c=>c.name).join('、')+'を騙した！'),
+        el('span',{class:'my-result-pts'},'+'+fooled.length+'点')
+      ));
+    }else{
+      rows.push(el('div',{class:'my-result-row'},
+        el('span',{class:'my-result-zero'},'あなたの嘘定義　→　誰も騙せなかった'),
+        el('span',{class:'my-result-zero'},'+0点')
+      ));
+    }
+  }
+  // 本物を当てたか
+  if(myVote===ri){
+    rows.push(el('div',{class:'my-result-row'},
+      el('span',{class:'my-result-label'},'本物の定義を当てた ✓'),
+      el('span',{class:'my-result-pts'},'+2点')
+    ));
+  }else{
+    rows.push(el('div',{class:'my-result-row'},
+      el('span',{class:'my-result-zero'},'本物の定義を外した'),
+      el('span',{class:'my-result-zero'},'+0点')
+    ));
+  }
+  // 合計
+  const prevSc=(sc[myId]||0);  // 現在のscはすでに加算済み
+  return el('div',{class:'card-green'},
+    el('p',{class:'role-label'},'あなたのラウンド結果（'+myName()+'）'),
+    ...rows
   );
 }
-function waiting(icon, name, msg) {
-  return el('div', { class: 'waiting' },
-    el('div', { style: 'font-size:44px;margin-bottom:1.5rem;' }, icon),
-    el('p',   { style: 'font-size:11px;color:#aaa;margin-bottom:6px;' }, '親'),
-    el('p',   { style: 'font-size:22px;font-weight:500;margin-bottom:1.5rem;' }, name),
-    el('p',   { style: 'font-size:13px;color:#ccc;' }, msg),
-    el('p',   { style: 'font-size:12px;color:#e0ddd8;margin-top:1.5rem;' }, 'ルームコード：' + roomCode)
+
+function renderOyaResult(sh,vs,kids,ri,sc){
+  const correctCount=kids.filter(c=>vs[c.id]===ri).length;
+  const rows=[];
+  if(correctCount===0){
+    rows.push(el('div',{class:'my-result-row'},
+      el('span',{class:'my-result-label'},'誰も正解しなかった → 親のボーナス'),
+      el('span',{class:'my-result-pts'},'+2点')
+    ));
+  }else{
+    rows.push(el('div',{class:'my-result-row'},
+      el('span',{class:'my-result-zero'},correctCount+'人が正解した → ボーナスなし'),
+      el('span',{class:'my-result-zero'},'+0点')
+    ));
+  }
+  // 自分の偽定義（親は本物を出すので偽定義なし → 親は子からの票を得られない仕様）
+  return el('div',{class:'card-blue'},
+    el('p',{class:'role-label'},'あなたのラウンド結果（親：'+(oya()?.name||'')+'）'),
+    ...rows
+  );
+}
+
+// ── 最終結果 ──────────────────────────────────────
+function renderFinal(){
+  const wrap=el('div');
+  const sc=gs.scores||{}, ps=players();
+  const sorted=[...ps].sort((a,b)=>(sc[b.id]||0)-(sc[a.id]||0));
+  const winner=sorted[0];
+  wrap.appendChild(hdr('最終結果'));
+  wrap.appendChild(el('div',{class:'card',style:'text-align:center'},
+    el('div',{class:'final-crown'},'🏆'),
+    el('p',{style:'font-size:13px;color:#aaa;margin-bottom:4px'},'優勝'),
+    el('p',{style:'font-family:"Noto Serif JP",serif;font-size:28px;font-weight:600;margin-bottom:.5rem'},winner?.name||''),
+    el('p',{style:'font-size:32px;font-weight:500'},String(sc[winner?.id]||0)+' 点')
+  ));
+  wrap.appendChild(el('div',{class:'card'},
+    el('p',{class:'role-label',style:'margin-bottom:1rem'},'全員のスコア'),
+    ...sorted.map((p,i)=>el('div',{class:'score-row'},
+      el('span',{class:'score-rank'},i===0?'🥇':i===1?'🥈':i===2?'🥉':String(i+1)),
+      el('span',{class:'score-name'},p.name,p.id===myId?el('span',{class:'tag tag-me'},'あなた'):null),
+      el('span',{class:'score-pt'},String(sc[p.id]||0))
+    ))
+  ));
+  if(isHost()){
+    wrap.appendChild(el('p',{class:'role-label',style:'text-align:center;margin-bottom:8px'},'まだ続けますか？'));
+    wrap.appendChild(el('div',{class:'btn-row'},
+      on(el('button',{class:'btn'},'+3ラウンド延長'),'click',()=>extendGame(3)),
+      on(el('button',{class:'btn'},'+5ラウンド延長'),'click',()=>extendGame(5))
+    ));
+  }else{
+    wrap.appendChild(el('p',{class:'muted'},'ゲームマスターが続けるか決めるのを待っています'));
+  }
+  return wrap;
+}
+
+// ── サブコンポーネント ──────────────────────────
+function hdr(badge){
+  return el('div',{class:'header'},el('span',{class:'logo'},'たほいや'),el('span',{class:'badge'},badge));
+}
+function waiting(icon,name,msg){
+  return el('div',{class:'waiting'},
+    el('div',{style:'font-size:44px;margin-bottom:1.5rem'},icon),
+    el('p',{style:'font-size:11px;color:#aaa;margin-bottom:6px'},'親'),
+    el('p',{style:'font-size:22px;font-weight:500;margin-bottom:1.5rem'},name),
+    el('p',{style:'font-size:13px;color:#ccc'},msg),
+    el('p',{style:'font-size:12px;color:#e0ddd8;margin-top:1.5rem'},'ルームコード：'+roomCode)
   );
 }
 
