@@ -32,14 +32,15 @@
     .btn:disabled{opacity:.35;cursor:not-allowed}
     .btn-p{background:#1c1c1a;color:#faf9f7;border:none}
     .btn-p:hover{background:#333}
-    .btn-sm{padding:6px 12px;font-size:12px;margin-top:0;border-radius:6px}
+    .btn-reveal{background:#3b5bb5;color:#fff;border:none;font-size:15px;padding:14px}
+    .btn-reveal:hover{background:#2d469a}
     .btn-row{display:flex;gap:8px;margin-top:6px}
     .btn-row .btn{margin-top:0}
-    .def-btn{display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;background:#fff;border:.5px solid #e0ddd8;border-radius:8px;padding:.85rem 1rem;margin-bottom:8px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:background .1s}
+    .def-btn{display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;background:#fff;border:.5px solid #e0ddd8;border-radius:8px;padding:.85rem 1rem;margin-bottom:8px;cursor:pointer;font-family:'Noto Sans JP',sans-serif}
     .def-btn:hover{background:#f5f4f0}
     .def-num{font-size:14px;font-weight:500;color:#bbb;min-width:22px;padding-top:1px;flex-shrink:0}
     .def-text{font-size:14px;line-height:1.7}
-    .num-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:1.2rem;border:.5px solid #e0ddd8;border-radius:10px;background:#fff;font-family:'Noto Serif JP',serif;font-size:28px;font-weight:600;cursor:pointer;margin-bottom:10px;letter-spacing:.05em;transition:background .1s}
+    .num-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:1.2rem;border:.5px solid #e0ddd8;border-radius:10px;background:#fff;font-family:'Noto Serif JP',serif;font-size:28px;font-weight:600;cursor:pointer;margin-bottom:10px;transition:background .1s}
     .num-btn:hover{background:#f5f4f0}
     .def-result{border:.5px solid #e0ddd8;border-radius:8px;padding:.85rem 1rem;margin-bottom:8px;display:flex;gap:14px}
     .def-result.real{background:#f0f8f2;border-color:#b3dfc0}
@@ -53,7 +54,6 @@
     .tag-oya{background:#e8f0fd;color:#3b5bb5}
     .tag-me{background:#f5f5f5;color:#888}
     .vote-chip{display:inline-block;background:#f5f4f0;border-radius:99px;padding:2px 7px;font-size:11px;margin-left:4px;color:#888}
-    .pts-badge{display:inline-block;background:#f0f8f2;color:#3a8c55;font-weight:600;font-size:13px;padding:3px 10px;border-radius:99px;margin-left:6px}
     .prog-bar{display:flex;gap:4px;margin-bottom:1rem}
     .prog-dot{height:3px;flex:1;border-radius:99px;background:#ede9e3}
     .prog-dot.done{background:#1c1c1a}
@@ -67,27 +67,38 @@
     .final-crown{font-size:48px;text-align:center;margin-bottom:.5rem}
     .select-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
     .select-row label{font-size:13px;color:#666;white-space:nowrap;min-width:90px}
-    .select-row select{margin-bottom:0;flex:1}
+    .select-row select,.select-row input{margin-bottom:0;flex:1}
     /* 並び替えリスト */
     .order-item{display:flex;align-items:flex-start;gap:10px;padding:.75rem;border:.5px solid #e0ddd8;border-radius:8px;margin-bottom:6px;background:#fff}
     .order-num{font-size:13px;font-weight:600;color:#bbb;min-width:20px;padding-top:2px;flex-shrink:0}
-    .order-text{font-size:13px;line-height:1.65;flex:1;color:#333}
+    .order-body{flex:1;min-width:0}
+    .order-text{font-size:13px;line-height:1.65;color:#333}
+    .order-author{font-size:11px;color:#aaa;margin-top:3px}  /* 親だけに見える */
     .order-btns{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
     .arrow-btn{border:.5px solid #ddd;border-radius:4px;background:#faf9f7;cursor:pointer;font-size:12px;padding:2px 7px;color:#666}
     .arrow-btn:hover{background:#f0ede8}
     .arrow-btn:disabled{opacity:.25;cursor:not-allowed}
-    /* 個人結果カード */
-    .my-result-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;font-size:13px;border-bottom:.5px solid #e8f0ee}
-    .my-result-label{color:#3a8c55}
-    .my-result-pts{font-weight:600;color:#3a8c55}
+    /* 個人結果 */
+    .my-result-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;font-size:13px;border-bottom:.5px solid #d6eed9}
+    .my-result-label{color:#2d7a47}
+    .my-result-pts{font-weight:600;color:#2d7a47}
     .my-result-zero{color:#bbb}
+    /* round info */
+    .round-sub{font-size:11px;color:#bbb;text-align:right}
+    /* タイマー */
+    .timer-wrap{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1rem;border-radius:10px;background:#f5f4f0;margin-bottom:1rem}
+    .timer-label{font-size:12px;color:#888}
+    .timer-display{font-family:'Noto Serif JP',serif;font-size:28px;font-weight:600;letter-spacing:.05em;color:#1c1c1a;min-width:80px;text-align:right}
+    .timer-display.over{color:#c0392b;animation:pulse 1s ease-in-out infinite}
+    .timer-over-label{font-size:11px;color:#c0392b;margin-top:2px;text-align:right}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
     @media(max-width:380px){.word-big{font-size:30px}.room-code{font-size:34px}}
   </style>
 </head>
 <body>
 <div id="app" style="padding-top:3rem;text-align:center;color:#aaa">読み込み中...</div>
 <script>
-// ━━━ Firebase 設定 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ━━━ Firebase 設定 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const firebaseConfig = {
   apiKey:            "AIzaSyCyL_8HK6Hqm01ieA6CNpe1geb_1T65Nuo",
   authDomain:        "tahoiya-c1bbf.firebaseapp.com",
@@ -100,201 +111,326 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ━━━ ユーティリティ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ━━━ ユーティリティ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const genId   = () => Math.random().toString(36).substr(2, 9);
 const genCode = () => {
   const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ234679';
-  return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join('');
+  return Array.from({length:4}, () => c[Math.floor(Math.random()*c.length)]).join('');
 };
 const shuffle = arr => {
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
   return a;
 };
-const toArr = v => v==null?[]:Array.isArray(v)?v:Object.values(v);
+const toArr = v => v==null ? [] : Array.isArray(v) ? v : Object.values(v);
 
 const el = (tag, attrs, ...kids) => {
   const e = document.createElement(tag);
-  if(attrs) for(const [k,v] of Object.entries(attrs)){
-    if(k==='class') e.className=v;
-    else if(k==='disabled'&&v) e.disabled=true;
-    else if(k!=='disabled') e.setAttribute(k,v);
+  if (attrs) for (const [k,v] of Object.entries(attrs)) {
+    if (k==='class') e.className=v;
+    else if (k==='disabled'&&v) e.disabled=true;
+    else if (k!=='disabled') e.setAttribute(k,v);
   }
-  const add = k=>{
-    if(k==null||k===false) return;
-    if(Array.isArray(k)){k.forEach(add);return;}
-    if(typeof k==='string'||typeof k==='number') e.appendChild(document.createTextNode(String(k)));
+  const add = k => {
+    if (k==null||k===false) return;
+    if (Array.isArray(k)) { k.forEach(add); return; }
+    if (typeof k==='string'||typeof k==='number') e.appendChild(document.createTextNode(String(k)));
     else e.appendChild(k);
   };
   kids.forEach(add);
   return e;
 };
-const on=(e,ev,fn)=>{e.addEventListener(ev,fn);return e;};
+const on = (e, ev, fn) => { e.addEventListener(ev, fn); return e; };
 
-// ━━━ 状態 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-let myId     = localStorage.getItem('tahoiya_id')||genId();
+// ━━━ 状態 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let myId     = localStorage.getItem('tahoiya_id') || genId();
 let roomCode = null, roomRef = null, gs = null;
-let pendingOrder = null; // 並び替え中のローカル状態
+let pendingOrder  = null;
+let timerInterval = null;
 localStorage.setItem('tahoiya_id', myId);
 
-// ━━━ セレクタ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const isOya    = () => gs && gs.oyaId===myId;
-const isHost   = () => gs && gs.hostId===myId;
-const players  = () => toArr(gs?.playerOrder).map(id=>({id,...gs.players[id]}));
-const children = () => players().filter(p=>p.id!==gs.oyaId);
-const myName   = () => gs?.players?.[myId]?.name||'';
-const oya      = () => players().find(p=>p.id===gs.oyaId);
+// ━━━ セレクタ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const isOya    = () => gs && gs.oyaId === myId;
+const isHost   = () => gs && gs.hostId === myId;
+const players  = () => toArr(gs?.playerOrder).map(id => ({id, ...gs.players[id]}));
+const children = () => players().filter(p => p.id !== gs.oyaId);
+const myName   = () => gs?.players?.[myId]?.name || '';
+const oya      = () => players().find(p => p.id === gs.oyaId);
 const dictName = () => gs?.dictName || '辞書';
 
-// ━━━ Firebase アクション ━━━━━━━━━━━━━━━━━━━━━━━━
-async function createRoom(name,totalRounds,votingMode,dictName){
-  const code=genCode(), ref=db.ref('rooms/'+code);
-  if((await ref.once('value')).exists()) return createRoom(name,totalRounds,votingMode);
+// ラウンド表示
+// 1ラウンド = 全員が1回ずつ親をやる（プレーヤー数ターン）
+// gs.turn = 現在のターン番号（1から）
+// gs.totalTurns = totalRounds × プレーヤー数（ゲーム開始時に確定）
+const currentRound = () => {
+  const ps = players();
+  if (!ps.length) return 1;
+  return Math.ceil((gs.turn||1) / ps.length);
+};
+const badgeText = () => {
+  const t = gs.turn||1, tot = gs.totalTurns||'?';
+  const r = currentRound(), tr = gs.totalRounds||'?';
+  return 'ターン ' + t + ' / ' + tot + '　（' + r + ' / ' + tr + ' ラウンド）';
+};
+
+// ━━━ Firebase アクション ━━━━━━━━━━━━━━━━━━━━━━━
+async function createRoom(name, totalRounds, votingMode, dictName) {
+  const code = genCode();
+  const ref  = db.ref('rooms/' + code);
+  if ((await ref.once('value')).exists()) return createRoom(name, totalRounds, votingMode, dictName);
   await ref.set({
-    hostId:myId, oyaId:myId, playerOrder:[myId], phase:'lobby',
-    round:1, totalRounds, votingMode, dictName,
-    word:'', fakeDefs:{}, realDef:null, shuffled:null, votes:{},
-    scores:{[myId]:0}, players:{[myId]:{name,joinedAt:Date.now()}}
+    hostId: myId, oyaId: myId,
+    playerOrder: [myId], phase: 'lobby',
+    turn: 1, totalTurns: null, totalRounds, votingMode, dictName,
+    timerEnabled: false, defTimerMinutes: 3, voteTimerMinutes: 1,
+    defTimerStartedAt: null, voteTimerStartedAt: null,
+    word: '', fakeDefs: {}, realDef: null, shuffled: null, votes: {},
+    pendingScores: null, pendingPhase: null,
+    scores: {[myId]: 0},
+    players: {[myId]: {name, joinedAt: Date.now()}}
   });
   subscribe(code);
 }
 
-async function joinRoom(code,name){
-  const ref=db.ref('rooms/'+code);
-  const snap=await ref.once('value');
-  if(!snap.exists())                           throw new Error('ルームが見つかりません');
-  const s=snap.val();
-  if(s.phase!=='lobby')                        throw new Error('ゲームはすでに始まっています');
-  if(Object.keys(s.players||{}).length>=8)     throw new Error('満員です（最大8人）');
-  if(s.players&&s.players[myId])              {subscribe(code);return;}
-  const order=toArr(s.playerOrder||Object.keys(s.players||{}));
-  await ref.update({['players/'+myId]:{name,joinedAt:Date.now()},['scores/'+myId]:0,playerOrder:[...order,myId]});
+async function joinRoom(code, name) {
+  const ref  = db.ref('rooms/' + code);
+  const snap = await ref.once('value');
+  if (!snap.exists())                          throw new Error('ルームが見つかりません');
+  const s = snap.val();
+  if (s.phase !== 'lobby')                     throw new Error('ゲームはすでに始まっています');
+  if (Object.keys(s.players||{}).length >= 8) throw new Error('満員です（最大8人）');
+  if (s.players && s.players[myId])           { subscribe(code); return; }
+  const order = toArr(s.playerOrder || Object.keys(s.players||{}));
+  await ref.update({
+    ['players/' + myId]: {name, joinedAt: Date.now()},
+    ['scores/'  + myId]: 0,
+    playerOrder: [...order, myId]
+  });
   subscribe(code);
 }
 
-function subscribe(code){
-  if(roomRef) roomRef.off();
-  roomCode=code; roomRef=db.ref('rooms/'+code);
-  roomRef.on('value',snap=>{gs=snap.val();render();});
+function subscribe(code) {
+  if (roomRef) roomRef.off();
+  roomCode = code;
+  roomRef  = db.ref('rooms/' + code);
+  roomRef.on('value', snap => { gs = snap.val(); render(); });
 }
 
-const startGame=()=>roomRef.update({
-  phase:'word-input', round:1, oyaId:players()[0].id,
-  word:'', fakeDefs:{}, realDef:null, shuffled:null, votes:{}
-});
-
-const confirmWord=word=>roomRef.update({word,phase:'collecting',fakeDefs:{},realDef:null});
-const submitFake=text=>roomRef.child('fakeDefs').update({[myId]:{name:myName(),text}});
-const saveRealDef=text=>roomRef.update({realDef:text});
-
-// 並び替え完了 → voting フェーズへ
-async function confirmOrder(orderedDefs){
-  const snap=await roomRef.once('value');
-  if(snap.val().phase!=='ordering') return;
-  await roomRef.update({phase:'voting', shuffled:orderedDefs, votes:{}});
-}
-
-// collecting → ordering フェーズへ
-async function enterOrdering(){
-  const snap=await roomRef.once('value');
-  const state=snap.val();
-  if(state.phase!=='collecting') return;
-  // pendingOrder を初期化（シャッフル）
-  const fakes=Object.entries(state.fakeDefs||{}).map(([pid,d])=>({playerId:pid,name:d.name,text:d.text,isReal:false}));
-  pendingOrder=shuffle([...fakes,{playerId:'__real__',name:dictName(),text:state.realDef,isReal:true}]);
-  await roomRef.update({phase:'ordering'});
-}
-
-async function submitVote(idx){
-  await roomRef.child('votes').update({[myId]:idx});
-  const kids=children();
-  const allVotes=Object.assign({},gs.votes,{[myId]:idx});
-  if(!kids.every(c=>allVotes[c.id]!==undefined)) return;
-
-  const sh=toArr(gs.shuffled);
-  const ri=sh.findIndex(d=>d.isReal);
-  const sc=Object.assign({},gs.scores);
-  let anyOk=false;
-  kids.forEach(c=>{
-    if(allVotes[c.id]===ri){sc[c.id]=(sc[c.id]||0)+2;anyOk=true;}
+function startGame() {
+  const ps = players();
+  const totalTurns = (gs.totalRounds||1) * ps.length;
+  return roomRef.update({
+    phase: 'word-input', turn: 1, totalTurns,
+    oyaId: ps[0].id, word: '', fakeDefs: {}, realDef: null,
+    shuffled: null, votes: {}, pendingScores: null, pendingPhase: null
   });
-  sh.forEach((def,i)=>{
-    if(!def.isReal){
-      const vc=Object.values(allVotes).filter(v=>v===i).length;
-      if(vc&&sc[def.playerId]!==undefined) sc[def.playerId]=(sc[def.playerId]||0)+vc;
+}
+
+const confirmWord = word => roomRef.update({word, phase: 'collecting', fakeDefs: {}, realDef: null, defTimerStartedAt: Date.now(), voteTimerStartedAt: null});
+const submitFake    = text => roomRef.child('fakeDefs').update({[myId]: {name: myName(), text}});
+const saveRealDef   = text => roomRef.update({realDef: text});
+
+async function enterOrdering() {
+  const snap  = await roomRef.once('value');
+  const state = snap.val();
+  if (state.phase !== 'collecting') return;
+  const fakes = Object.entries(state.fakeDefs||{}).map(([pid,d]) => ({
+    playerId: pid, name: d.name, text: d.text, isReal: false
+  }));
+  const dn = state.dictName || '辞書';
+  pendingOrder = shuffle([...fakes, {playerId: '__real__', name: dn, text: state.realDef, isReal: true}]);
+  await roomRef.update({phase: 'ordering'});
+}
+
+async function confirmOrder(orderedDefs) {
+  const snap = await roomRef.once('value');
+  if (snap.val().phase !== 'ordering') return;
+  await roomRef.update({phase: 'voting', shuffled: orderedDefs, votes: {}, voteTimerStartedAt: Date.now()});
+}
+
+async function submitVote(idx) {
+  await roomRef.child('votes').update({[myId]: idx});
+  const kids     = children();
+  const allVotes = Object.assign({}, gs.votes, {[myId]: idx});
+  if (!kids.every(c => allVotes[c.id] !== undefined)) return;
+
+  // スコア計算
+  const sh  = toArr(gs.shuffled);
+  const ri  = sh.findIndex(d => d.isReal);
+  const sc  = Object.assign({}, gs.scores);
+  let anyOk = false;
+  kids.forEach(c => {
+    if (allVotes[c.id] === ri) { sc[c.id] = (sc[c.id]||0) + 2; anyOk = true; }
+  });
+  sh.forEach((def, i) => {
+    if (!def.isReal) {
+      const vc = Object.values(allVotes).filter(v => v === i).length;
+      if (vc && sc[def.playerId] !== undefined) sc[def.playerId] = (sc[def.playerId]||0) + vc;
     }
   });
-  if(!anyOk&&sc[gs.oyaId]!==undefined) sc[gs.oyaId]=(sc[gs.oyaId]||0)+2;
-  const nextPhase=(gs.round>=gs.totalRounds)?'final':'results';
-  await roomRef.update({phase:nextPhase,scores:sc,votes:allVotes});
-}
+  if (!anyOk && sc[gs.oyaId] !== undefined) sc[gs.oyaId] = (sc[gs.oyaId]||0) + 2;
 
-async function nextRound(){
-  const ps=players();
-  const ni=(ps.findIndex(p=>p.id===gs.oyaId)+1)%ps.length;
+  const isLast    = (gs.turn||1) >= (gs.totalTurns||1);
+  const nextPhase = isLast ? 'final' : 'results';
+
+  // 全票揃ったら vote-reveal へ（親が先に確認、スコアはまだ反映しない）
   await roomRef.update({
-    phase:'word-input', round:(gs.round||1)+1, oyaId:ps[ni].id,
-    word:'', fakeDefs:{}, realDef:null, shuffled:null, votes:{}
+    phase: 'vote-reveal',
+    votes: allVotes,
+    pendingScores: sc,
+    pendingPhase: nextPhase
   });
 }
 
-async function extendGame(n){
-  await roomRef.update({totalRounds:(gs.totalRounds||0)+n});
+// 親が「発表する」を押した瞬間に全員にスコアと結果が開示される
+async function revealResults() {
+  await roomRef.update({
+    scores: gs.pendingScores,
+    phase: gs.pendingPhase
+  });
+}
+
+async function nextRound() {
+  const ps  = players();
+  const ni  = (ps.findIndex(p => p.id === gs.oyaId) + 1) % ps.length;
+  const nextTurn = (gs.turn||1) + 1;
+  await roomRef.update({
+    phase: 'word-input', turn: nextTurn,
+    oyaId: ps[ni].id, word: '', fakeDefs: {}, realDef: null,
+    shuffled: null, votes: {}, pendingScores: null, pendingPhase: null
+  });
+}
+
+async function extendGame(n) {
+  const ps = players();
+  const addTurns = n * ps.length;
+  await roomRef.update({
+    totalRounds: (gs.totalRounds||0) + n,
+    totalTurns:  (gs.totalTurns||0) + addTurns
+  });
   await nextRound();
 }
 
-// ━━━ レンダリング ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function render(){
-  const app=document.getElementById('app');
+// ━━━ レンダリング ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function render() {
+  const app = document.getElementById('app');
   app.removeAttribute('style');
-  if(!roomCode||!gs){app.innerHTML='';app.appendChild(renderHome());return;}
-  try{
-    const screens={
-      lobby:renderLobby,'word-input':renderWordInput,
-      collecting:renderCollecting,ordering:renderOrdering,
-      voting:renderVoting,results:renderResults,final:renderFinal
+  // タイマーを止める（再レンダリング前にクリア）
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  if (!roomCode || !gs) { app.innerHTML = ''; app.appendChild(renderHome()); return; }
+  try {
+    const screens = {
+      lobby: renderLobby, 'word-input': renderWordInput,
+      collecting: renderCollecting, ordering: renderOrdering,
+      voting: renderVoting, 'vote-reveal': renderVoteReveal,
+      results: renderResults, final: renderFinal
     };
-    const screen=(screens[gs.phase]||renderLobby)();
-    app.innerHTML=''; app.appendChild(screen);
-  }catch(err){
-    app.innerHTML='<p style="color:red;padding:2rem;font-size:12px;white-space:pre-wrap">エラー: '+err.message+'\n'+err.stack+'</p>';
+    const screen = (screens[gs.phase] || renderLobby)();
+    app.innerHTML = '';
+    app.appendChild(screen);
+    // タイマーが必要なフェーズなら起動
+    startTimerIfNeeded();
+  } catch(err) {
+    app.innerHTML = '<p style="color:red;padding:2rem;font-size:12px;white-space:pre-wrap">エラー: ' + err.message + '\n' + err.stack + '</p>';
     console.error(err);
   }
 }
 
-// ── ホーム ───────────────────────────────────────
-function renderHome(){
-  const wrap=el('div');
-  wrap.appendChild(el('div',{style:'margin-bottom:2rem'},
-    el('h1',{class:'logo',style:'margin-bottom:4px'},'たほいや'),
-    el('p',{style:'font-size:12px;color:#aaa'},'辞書を使った言葉遊び　3〜8人')
-  ));
-  const cErr=el('p',{class:'err'}), cIn=el('input',{type:'text',placeholder:'自分の名前を入力...'});
-  const cBtn=on(el('button',{class:'btn btn-p'},'ルームを作る（最初の親になる）'),'click',async()=>{
-    if(!cIn.value.trim()){cErr.textContent='名前を入力してください';return;}
-    cBtn.disabled=true; cBtn.textContent='作成中...';
-    try{await createRoom(cIn.value.trim(),3,'text','辞書');}
-    catch(e){cErr.textContent=e.message;cBtn.disabled=false;cBtn.textContent='ルームを作る';}
-  });
-  wrap.appendChild(el('div',{class:'card'},el('p',{class:'role-label'},'新しいゲームを始める'),el('p',{class:'section-title'},'ルームを作る'),cIn,cErr,cBtn));
-  const jErr=el('p',{class:'err'}), jName=el('input',{type:'text',placeholder:'自分の名前...'}),
-        jCode=el('input',{type:'text',placeholder:'ルームコード（例：ABCD）',style:'text-transform:uppercase;letter-spacing:.15em;font-size:18px'});
-  jCode.addEventListener('input',()=>{jCode.value=jCode.value.toUpperCase();});
-  const jBtn=on(el('button',{class:'btn'},'ルームに参加する'),'click',async()=>{
-    if(!jName.value.trim()){jErr.textContent='名前を入力してください';return;}
-    if(jCode.value.trim().length<4){jErr.textContent='ルームコードは4文字です';return;}
-    jBtn.disabled=true; jBtn.textContent='参加中...';
-    try{await joinRoom(jCode.value.trim(),jName.value.trim());}
-    catch(e){jErr.textContent=e.message;jBtn.disabled=false;jBtn.textContent='ルームに参加する';}
-  });
-  wrap.appendChild(el('div',{class:'card'},el('p',{class:'role-label'},'既存のルームに入る'),el('p',{class:'section-title'},'ルームに参加'),jName,jCode,jErr,jBtn));
-  wrap.appendChild(el('div',{class:'rules-card'},'親が辞書から難しい言葉を選び、子それぞれがそれっぽい嘘の定義を考えます。',el('br'),el('br'),'本物を当てたら +2点　／　嘘定義に票が入ったら +1点/票　／　誰も正解しなければ親 +2点'));
+// ━━━ タイマー ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function startTimerIfNeeded() {
+  if (!gs || !gs.timerEnabled) return;
+  let startedAt = null, limitMins = 0, domId = null;
+  if (gs.phase === 'collecting' && gs.defTimerStartedAt) {
+    startedAt = gs.defTimerStartedAt;
+    limitMins = gs.defTimerMinutes  || 3;
+    domId     = 'timer-collecting';
+  } else if (gs.phase === 'voting' && gs.voteTimerStartedAt) {
+    startedAt = gs.voteTimerStartedAt;
+    limitMins = gs.voteTimerMinutes || 1;
+    domId     = 'timer-voting';
+  }
+  if (!startedAt || !domId) return;
+  const tick = () => {
+    const el = document.getElementById(domId);
+    if (!el) { clearInterval(timerInterval); timerInterval = null; return; }
+    const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+    const limit   = limitMins * 60;
+    const over    = elapsed >= limit;
+    const secs    = over ? elapsed - limit : limit - elapsed;
+    const m = Math.floor(secs / 60);
+    const s = String(secs % 60).padStart(2, '0');
+    const numEl    = el.querySelector('.timer-display');
+    const labelEl  = el.querySelector('.timer-over-label');
+    if (numEl)   { numEl.textContent = (over ? '+' : '') + m + ':' + s; numEl.className = 'timer-display' + (over ? ' over' : ''); }
+    if (labelEl) { labelEl.textContent = over ? '時間が過ぎています' : ''; labelEl.style.display = over ? '' : 'none'; }
+  };
+  tick();
+  timerInterval = setInterval(tick, 500);
+}
+
+function renderTimer(domId, label) {
+  // タイマーが無効か、対応する start 時刻がない場合は表示しない
+  if (!gs || !gs.timerEnabled) return null;
+  const hasStart = domId === 'timer-collecting' ? gs.defTimerStartedAt : gs.voteTimerStartedAt;
+  if (!hasStart) return null;
+  const mins = domId === 'timer-collecting' ? (gs.defTimerMinutes||3) : (gs.voteTimerMinutes||1);
+  const wrap = el('div', {class:'timer-wrap', id: domId},
+    el('span', {class:'timer-label'}, label + '　' + mins + '分'),
+    el('div', {style:'text-align:right'},
+      el('div', {class:'timer-display'}, mins + ':00'),
+      el('div', {class:'timer-over-label', style:'display:none'}, '')
+    )
+  );
   return wrap;
 }
 
-// ── ロビー ───────────────────────────────────────
-function renderLobby(){
-  const ps=players(), wrap=el('div');
+// ── ホーム ──────────────────────────────────────
+function renderHome() {
+  const wrap = el('div');
+  wrap.appendChild(el('div', {style:'margin-bottom:2rem'},
+    el('h1', {class:'logo', style:'margin-bottom:4px'}, 'たほいや'),
+    el('p',  {style:'font-size:12px;color:#aaa'}, '辞書を使った言葉遊び　3〜8人')
+  ));
+  const cErr = el('p',{class:'err'}), cIn = el('input',{type:'text',placeholder:'自分の名前を入力...'});
+  const cBtn = on(el('button',{class:'btn btn-p'},'ルームを作る（最初の親になる）'),'click', async () => {
+    if (!cIn.value.trim()) { cErr.textContent='名前を入力してください'; return; }
+    cBtn.disabled=true; cBtn.textContent='作成中...';
+    try { await createRoom(cIn.value.trim(), 1, 'text', ''); }
+    catch(e) { cErr.textContent=e.message; cBtn.disabled=false; cBtn.textContent='ルームを作る'; }
+  });
+  wrap.appendChild(el('div',{class:'card'},
+    el('p',{class:'role-label'},'新しいゲームを始める'),
+    el('p',{class:'section-title'},'ルームを作る'),
+    cIn, cErr, cBtn
+  ));
+  const jErr=el('p',{class:'err'}), jName=el('input',{type:'text',placeholder:'自分の名前...'}),
+        jCode=el('input',{type:'text',placeholder:'ルームコード（例：ABCD）',style:'text-transform:uppercase;letter-spacing:.15em;font-size:18px'});
+  jCode.addEventListener('input', () => { jCode.value = jCode.value.toUpperCase(); });
+  const jBtn = on(el('button',{class:'btn'},'ルームに参加する'),'click', async () => {
+    if (!jName.value.trim())           { jErr.textContent='名前を入力してください'; return; }
+    if (jCode.value.trim().length < 4) { jErr.textContent='ルームコードは4文字です'; return; }
+    jBtn.disabled=true; jBtn.textContent='参加中...';
+    try { await joinRoom(jCode.value.trim(), jName.value.trim()); }
+    catch(e) { jErr.textContent=e.message; jBtn.disabled=false; jBtn.textContent='ルームに参加する'; }
+  });
+  wrap.appendChild(el('div',{class:'card'},
+    el('p',{class:'role-label'},'既存のルームに入る'),
+    el('p',{class:'section-title'},'ルームに参加'),
+    jName, jCode, jErr, jBtn
+  ));
+  wrap.appendChild(el('div',{class:'rules-card'},
+    '親が辞書から難しい言葉を選び、子それぞれがそれっぽい嘘の定義を考えます。', el('br'), el('br'),
+    '本物を当てたら +2点　／　嘘定義に票が入ったら +1点/票　／　誰も正解しなければ親 +2点'
+  ));
+  return wrap;
+}
+
+// ── ロビー ──────────────────────────────────────
+function renderLobby() {
+  const ps = players(), wrap = el('div');
   wrap.appendChild(hdr('ロビー'));
   wrap.appendChild(el('div',{class:'card',style:'text-align:center'},
     el('p',{style:'font-size:12px;color:#aaa;margin-bottom:4px'},'ルームコード'),
@@ -302,49 +438,79 @@ function renderLobby(){
     el('p',{style:'font-size:12px;color:#ccc'},'このコードを参加者に伝えてください')
   ));
   wrap.appendChild(el('div',{class:'card'},
-    el('p',{class:'role-label'},'参加者　'+ps.length+'人'),
-    ...ps.map(p=>el('div',{class:'player-row'},
-      el('span',{},p.name,
-        p.id===myId?el('span',{class:'tag tag-me'},'あなた'):null,
-        p.id===gs.hostId?el('span',{class:'tag tag-oya'},'GM'):null),
+    el('p',{class:'role-label'},'参加者　' + ps.length + '人'),
+    ...ps.map(p => el('div',{class:'player-row'},
+      el('span',{}, p.name,
+        p.id===myId      ? el('span',{class:'tag tag-me'},'あなた') : null,
+        p.id===gs.hostId ? el('span',{class:'tag tag-oya'},'GM') : null),
       el('span',{style:'color:#ccc;font-size:12px'},'✓')
     ))
   ));
-  if(isHost()){
-    const dictInp=el('input',{type:'text',placeholder:'例：広辞苑、Oxford Dictionary...',style:'margin-bottom:0'});
-    dictInp.value=gs.dictName||'';
-    dictInp.addEventListener('change',()=>{
-      if(dictInp.value.trim()) roomRef.update({dictName:dictInp.value.trim()});
-    });
-    const rSel=el('select');
-    [3,5,7,10].forEach(n=>{
-      const o=el('option',{value:String(n)},String(n)+' ラウンド');
-      if(n===(gs.totalRounds||3)) o.selected=true;
+  if (isHost()) {
+    const dictInp = el('input',{type:'text',placeholder:'例：広辞苑、Oxford Dictionary...',style:'margin-bottom:0'});
+    dictInp.value = gs.dictName || '';
+    dictInp.addEventListener('change', () => { if (dictInp.value.trim()) roomRef.update({dictName: dictInp.value.trim()}); });
+
+    const rSel = el('select');
+    [1,2,3,5].forEach(n => {
+      const o = el('option',{value:String(n)}, String(n) + ' ラウンド（' + n + '×' + ps.length + '=' + (n*ps.length) + ' ターン）');
+      if (n === (gs.totalRounds||1)) o.selected = true;
       rSel.appendChild(o);
     });
-    rSel.addEventListener('change',()=>roomRef.update({totalRounds:parseInt(rSel.value)}));
+    rSel.addEventListener('change', () => roomRef.update({totalRounds: parseInt(rSel.value)}));
 
-    const mSel=el('select');
-    [['text','テキスト表示（各自が読む）'],['readout','親が読み上げ（子はボタンのみ）']].forEach(([v,l])=>{
-      const o=el('option',{value:v},l);
-      if(v===(gs.votingMode||'text')) o.selected=true;
+    const mSel = el('select');
+    [['text','テキスト表示（各自が読む）'],['readout','親が読み上げ（子はボタンのみ）']].forEach(([v,l]) => {
+      const o = el('option',{value:v}, l);
+      if (v === (gs.votingMode||'text')) o.selected = true;
       mSel.appendChild(o);
     });
-    mSel.addEventListener('change',()=>roomRef.update({votingMode:mSel.value}));
+    mSel.addEventListener('change', () => roomRef.update({votingMode: mSel.value}));
+
+    // タイマー設定
+    const tEnSel = el('select');
+    [['0','使わない'],['1','使う']].forEach(([v,l]) => {
+      const o = el('option',{value:v},l);
+      if (v === (gs.timerEnabled ? '1' : '0')) o.selected = true;
+      tEnSel.appendChild(o);
+    });
+    tEnSel.addEventListener('change', () => roomRef.update({timerEnabled: tEnSel.value==='1'}));
+
+    const defTSel = el('select');
+    [1,2,3,5].forEach(n => {
+      const o = el('option',{value:String(n)},String(n)+'分');
+      if (n === (gs.defTimerMinutes||3)) o.selected = true;
+      defTSel.appendChild(o);
+    });
+    defTSel.addEventListener('change', () => roomRef.update({defTimerMinutes: parseInt(defTSel.value)}));
+
+    const voteTSel = el('select');
+    [0.5,1,2,3].forEach(n => {
+      const o = el('option',{value:String(n)},n<1?'30秒':String(n)+'分');
+      if (n === (gs.voteTimerMinutes||1)) o.selected = true;
+      voteTSel.appendChild(o);
+    });
+    voteTSel.addEventListener('change', () => roomRef.update({voteTimerMinutes: parseFloat(voteTSel.value)}));
 
     wrap.appendChild(el('div',{class:'card'},
       el('p',{class:'role-label'},'ゲーム設定'),
-      el('div',{class:'select-row'},el('label',{},'使う辞書'),dictInp),
-      el('div',{class:'select-row'},el('label',{},'ラウンド数'),rSel),
-      el('div',{class:'select-row'},el('label',{},'投票モード'),mSel),
+      el('div',{class:'select-row'}, el('label',{},'使う辞書'), dictInp),
+      el('div',{class:'select-row'}, el('label',{},'ラウンド数'), rSel),
+      el('div',{class:'select-row'}, el('label',{},'投票モード'), mSel),
+      el('hr',{class:'divhr',style:'margin:.5rem 0'}),
+      el('div',{class:'select-row'}, el('label',{},'タイマー'), tEnSel),
+      el('div',{class:'select-row'}, el('label',{},'定義を考える'), defTSel),
+      el('div',{class:'select-row'}, el('label',{},'答えを選ぶ'), voteTSel),
       on(el('button',{class:'btn btn-p',disabled:ps.length<3},
-        ps.length<3?'あと'+(3-ps.length)+'人必要':'ゲームスタート（'+ps.length+'人）'),'click',startGame)
+        ps.length<3 ? 'あと'+(3-ps.length)+'人必要' : 'ゲームスタート（'+ps.length+'人）'),'click',startGame)
     ));
-  }else{
-    const mLabel={'text':'テキスト表示','readout':'親が読み上げ'}[gs.votingMode||'text'];
+  } else {
+    const mLabel = {'text':'テキスト表示','readout':'親が読み上げ'}[gs.votingMode||'text'];
+    const dn = gs.dictName ? '辞書：'+gs.dictName+'　' : '';
+    const tmLabel = gs.timerEnabled ? '　タイマー：定義'+gs.defTimerMinutes+'分 / 投票'+(gs.voteTimerMinutes<1?'30秒':gs.voteTimerMinutes+'分') : '';
     wrap.appendChild(el('div',{class:'card'},
       el('p',{class:'role-label'},'設定'),
-      el('p',{style:'font-size:13px;color:#888'},'辞書：'+(gs.dictName||'未設定')+'　'+gs.totalRounds+'ラウンド　投票：'+mLabel)
+      el('p',{style:'font-size:13px;color:#888'}, dn + (gs.totalRounds||1) + 'ラウンド　投票：' + mLabel + tmLabel)
     ));
     wrap.appendChild(el('p',{class:'muted'},'ゲームマスターがスタートするのを待っています...'));
   }
@@ -352,31 +518,20 @@ function renderLobby(){
 }
 
 // ── 言葉入力（親） ──────────────────────────────
-function renderWordInput(){
-  const wrap=el('div');
-  wrap.appendChild(hdr('第'+gs.round+' / '+gs.totalRounds+' ラウンド'));
-  if(isOya()){
-    let draft='';
-    const inputArea=el('div'), previewArea=el('div',{style:'display:none'});
-    const inp=el('input',{type:'text',placeholder:'例：みやびやか、くぐつ...'});
-    inp.addEventListener('input',e=>{draft=e.target.value;});
-    inp.addEventListener('keydown',e=>{if(e.key==='Enter') e.preventDefault();});
-    const wordPreview=el('div',{class:'word-confirm'},'');
-    on(el('button',{class:'btn btn-p'},'確認する　→'),'click',()=>{
-      if(!draft.trim()) return;
-      wordPreview.textContent=draft.trim();
-      inputArea.style.display='none'; previewArea.style.display='';
-    });
-    inputArea.appendChild(el('p',{class:'role-label'},'親：'+(oya()?.name||'')));
-    inputArea.appendChild(el('p',{class:'section-title'},'言葉を入力してください'));
-    inputArea.appendChild(el('p',{class:'section-note'},'辞書から難しい言葉を選んで入力。Enterキーは無効です。確認画面が出ます。'));
-    inputArea.appendChild(inp);
-    inputArea.appendChild(el('button',{class:'btn btn-p'},'確認する　→'));
-    // ボタン再追加（クロージャのため）
-    inputArea.innerHTML=''; // reset
-    const toPreviewBtn=on(el('button',{class:'btn btn-p'},'確認する　→'),'click',()=>{
-      if(!draft.trim()) return;
-      wordPreview.textContent=draft.trim();
+function renderWordInput() {
+  const wrap = el('div');
+  wrap.appendChild(hdr(badgeText()));
+  if (isOya()) {
+    let draft = '';
+    const inputArea   = el('div');
+    const previewArea = el('div',{style:'display:none'});
+    const inp = el('input',{type:'text',placeholder:'例：みやびやか、くぐつ...'});
+    inp.addEventListener('input', e => { draft = e.target.value; });
+    inp.addEventListener('keydown', e => { if (e.key==='Enter') e.preventDefault(); });
+    const wordPreview = el('div',{class:'word-confirm'},'');
+    const toPreviewBtn = on(el('button',{class:'btn btn-p'},'確認する　→'),'click',() => {
+      if (!draft.trim()) return;
+      wordPreview.textContent = draft.trim();
       inputArea.style.display='none'; previewArea.style.display='';
     });
     inputArea.appendChild(el('p',{class:'role-label'},'親：'+(oya()?.name||'')));
@@ -385,46 +540,49 @@ function renderWordInput(){
     inputArea.appendChild(inp);
     inputArea.appendChild(toPreviewBtn);
 
-    const backBtn=on(el('button',{class:'btn'},'← 書き直す'),'click',()=>{
+    const backBtn = on(el('button',{class:'btn'},'← 書き直す'),'click',() => {
       inputArea.style.display=''; previewArea.style.display='none'; inp.value=draft; inp.focus();
     });
-    const okBtn=on(el('button',{class:'btn btn-p'},'これで決定'),'click',()=>{if(draft.trim()) confirmWord(draft.trim());});
+    const okBtn = on(el('button',{class:'btn btn-p'},'これで決定'),'click',() => { if (draft.trim()) confirmWord(draft.trim()); });
     previewArea.appendChild(el('p',{class:'role-label'},'この言葉でよいですか？'));
     previewArea.appendChild(wordPreview);
     previewArea.appendChild(el('hr',{class:'divhr'}));
     previewArea.appendChild(el('div',{class:'btn-row'},backBtn,okBtn));
+
     wrap.appendChild(el('div',{class:'card'},inputArea,previewArea));
-  }else{
-    wrap.appendChild(waiting('📖',oya()?.name||'','辞書から言葉を選んでいます...'));
+  } else {
+    wrap.appendChild(waiting('📖', oya()?.name||'', '辞書から言葉を選んでいます...'));
   }
   return wrap;
 }
 
 // ── 嘘定義収集（並行入力） ──────────────────────
-function renderCollecting(){
-  const wrap=el('div');
-  const kids=children(), fakes=gs.fakeDefs||{};
-  const doneCount=Object.keys(fakes).length;
-  const allFakesDone=doneCount>=kids.length, hasReal=!!gs.realDef;
-  const canStart=allFakesDone&&hasReal;
+function renderCollecting() {
+  const wrap = el('div');
+  const kids = children(), fakes = gs.fakeDefs||{};
+  const doneCount = Object.keys(fakes).length;
+  const allFakesDone = doneCount >= kids.length;
+  const hasReal = !!gs.realDef;
+  const canStart = allFakesDone && hasReal;
 
-  wrap.appendChild(hdr('第'+gs.round+' / '+gs.totalRounds+' ラウンド'));
-  wrap.appendChild(el('div',{class:'card'},el('div',{class:'word-big'},gs.word)));
+  wrap.appendChild(hdr(badgeText()));
+  wrap.appendChild(el('div',{class:'card'}, el('div',{class:'word-big'},gs.word)));
+  const tCol = renderTimer('timer-collecting', '定義を考える時間'); if (tCol) wrap.appendChild(tCol);
 
-  if(isOya()){
-    const content=[];
-    if(!hasReal){
-      let r='';
-      const inp=el('textarea',{placeholder:'辞書の定義をそのまま入力...'});
-      inp.addEventListener('input',e=>{r=e.target.value;});
+  if (isOya()) {
+    const content = [];
+    if (!hasReal) {
+      let r = '';
+      const inp = el('textarea',{placeholder:'辞書の定義をそのまま入力...'});
+      inp.addEventListener('input', e => { r = e.target.value; });
       content.push(
         el('p',{class:'role-label'},'親：'+(oya()?.name||'')),
         el('p',{class:'section-title'},'本物の定義を入力してください'),
         el('p',{class:'section-note'},'子が嘘の定義を入力している間に、先に辞書の定義を入力しておけます。'),
         inp,
-        on(el('button',{class:'btn btn-p'},'保存する'),'click',()=>{if(r.trim()) saveRealDef(r.trim());})
+        on(el('button',{class:'btn btn-p'},'保存する'),'click',() => { if (r.trim()) saveRealDef(r.trim()); })
       );
-    }else{
+    } else {
       content.push(
         el('p',{class:'role-label'},'親：'+(oya()?.name||'')),
         el('span',{class:'submitted'},'✓ 本物の定義を保存しました')
@@ -433,10 +591,10 @@ function renderCollecting(){
     content.push(
       el('hr',{class:'divhr'}),
       el('p',{style:'font-size:13px;color:#888;margin-bottom:.5rem'},'子の提出状況'),
-      el('div',{class:'prog-bar'},...kids.map(c=>el('div',{class:'prog-dot'+(fakes[c.id]?' done':'')}))),
-      el('p',{style:'font-size:13px;color:#888'},doneCount+' / '+kids.length+' 人が提出しました')
+      el('div',{class:'prog-bar'},...kids.map(c => el('div',{class:'prog-dot'+(fakes[c.id]?' done':'')}))),
+      el('p',{style:'font-size:13px;color:#888'}, doneCount+' / '+kids.length+' 人が提出しました')
     );
-    if(canStart){
+    if (canStart) {
       content.push(
         el('hr',{class:'divhr'}),
         el('p',{class:'notice-green'},'✓ 全員の定義が揃いました！'),
@@ -444,100 +602,106 @@ function renderCollecting(){
       );
     }
     wrap.appendChild(el('div',{class:'card'},...content));
-  }else if(fakes[myId]){
+  } else if (fakes[myId]) {
     wrap.appendChild(el('div',{class:'card'},
-      el('div',{style:'text-align:center;padding:.5rem 0 1rem'},el('span',{class:'submitted'},'✓ 提出済み')),
-      el('p',{style:'font-size:13px;color:#aaa;text-align:center'},'他の人の提出を待っています（'+doneCount+' / '+kids.length+'人）'),
-      canStart?el('p',{style:'font-size:13px;color:#888;text-align:center;margin-top:.75rem'},'親が順番を決めています...'):null
+      el('div',{style:'text-align:center;padding:.5rem 0 1rem'}, el('span',{class:'submitted'},'✓ 提出済み')),
+      el('p',{style:'font-size:13px;color:#aaa;text-align:center'},
+        '他の人の提出を待っています（'+doneCount+' / '+kids.length+'人）'),
+      canStart ? el('p',{style:'font-size:13px;color:#888;text-align:center;margin-top:.75rem'},'親が順番を決めています...') : null
     ));
-  }else{
-    let f='';
-    const inp=el('textarea',{placeholder:'それっぽいけど偽物の定義を書いてください...'});
-    inp.addEventListener('input',e=>{f=e.target.value;});
+  } else {
+    let f = '';
+    const inp = el('textarea',{placeholder:'それっぽいけど偽物の定義を書いてください...'});
+    inp.addEventListener('input', e => { f = e.target.value; });
     wrap.appendChild(el('div',{class:'card'},
       el('p',{class:'role-label'},'子：'+myName()),
       el('p',{class:'section-title'},'嘘の定義を考えてください'),
       el('p',{class:'section-note'},'それっぽいけど偽物の定義を入力。他の人には見えません。'),
       inp,
-      on(el('button',{class:'btn btn-p'},'提出　→'),'click',()=>{if(f.trim()) submitFake(f.trim());})
+      on(el('button',{class:'btn btn-p'},'提出　→'),'click',() => { if (f.trim()) submitFake(f.trim()); })
     ));
   }
   return wrap;
 }
 
-// ── 並び替えフェーズ（親のみ） ────────────────────
-function renderOrdering(){
-  const wrap=el('div');
-  wrap.appendChild(hdr('第'+gs.round+' / '+gs.totalRounds+' ラウンド'));
-  wrap.appendChild(el('div',{class:'card'},el('div',{class:'word-big'},gs.word)));
+// ── 並び替え（親のみ・著者名表示あり） ──────────
+function renderOrdering() {
+  const wrap = el('div');
+  wrap.appendChild(hdr(badgeText()));
+  wrap.appendChild(el('div',{class:'card'}, el('div',{class:'word-big'},gs.word)));
 
-  if(isOya()){
-    // pendingOrder が空なら初期化（ページリロード対策）
-    if(!pendingOrder||pendingOrder.length===0){
-      const fakes=Object.entries(gs.fakeDefs||{}).map(([pid,d])=>({playerId:pid,name:d.name,text:d.text,isReal:false}));
-      pendingOrder=shuffle([...fakes,{playerId:'__real__',name:dictName(),text:gs.realDef,isReal:true}]);
+  if (isOya()) {
+    if (!pendingOrder || pendingOrder.length === 0) {
+      const fakes = Object.entries(gs.fakeDefs||{}).map(([pid,d]) => ({playerId:pid,name:d.name,text:d.text,isReal:false}));
+      pendingOrder = shuffle([...fakes, {playerId:'__real__',name:dictName(),text:gs.realDef,isReal:true}]);
     }
 
-    const listEl=el('div');
-    const redraw=()=>{
-      listEl.innerHTML='';
-      pendingOrder.forEach((def,i)=>{
-        const upBtn=on(el('button',{class:'arrow-btn',disabled:i===0},'↑'),'click',()=>{
-          [pendingOrder[i-1],pendingOrder[i]]=[pendingOrder[i],pendingOrder[i-1]]; redraw();
+    const listEl = el('div');
+    const redraw = () => {
+      listEl.innerHTML = '';
+      pendingOrder.forEach((def, i) => {
+        const upBtn = on(el('button',{class:'arrow-btn',disabled:i===0},'↑'),'click',() => {
+          [pendingOrder[i-1],pendingOrder[i]] = [pendingOrder[i],pendingOrder[i-1]]; redraw();
         });
-        const dnBtn=on(el('button',{class:'arrow-btn',disabled:i===pendingOrder.length-1},'↓'),'click',()=>{
-          [pendingOrder[i+1],pendingOrder[i]]=[pendingOrder[i],pendingOrder[i+1]]; redraw();
+        const dnBtn = on(el('button',{class:'arrow-btn',disabled:i===pendingOrder.length-1},'↓'),'click',() => {
+          [pendingOrder[i+1],pendingOrder[i]] = [pendingOrder[i],pendingOrder[i+1]]; redraw();
         });
+        // 著者ラベル（親だけが見るこの画面に表示）
+        const authorLabel = def.isReal
+          ? '【' + dictName() + '】本物'
+          : '【' + def.name + '】の嘘定義';
         listEl.appendChild(el('div',{class:'order-item'},
           el('span',{class:'order-num'},String(i+1)),
-          el('span',{class:'order-text'},def.text),
+          el('div',{class:'order-body'},
+            el('div',{class:'order-text'},def.text),
+            el('div',{class:'order-author'},authorLabel)   // ← 著者名
+          ),
           el('div',{class:'order-btns'},upBtn,dnBtn)
         ));
       });
     };
     redraw();
 
-    const shuffleBtn=on(el('button',{class:'btn'},'ランダムにシャッフル'),'click',()=>{
-      pendingOrder=shuffle(pendingOrder); redraw();
+    const shuffleBtn = on(el('button',{class:'btn'},'ランダムにシャッフル'),'click',() => {
+      pendingOrder = shuffle(pendingOrder); redraw();
     });
-    const startBtn=on(el('button',{class:'btn btn-p',style:'margin-top:10px'},'この順番で投票を開始　→'),'click',()=>{
+    const startBtn = on(el('button',{class:'btn btn-p',style:'margin-top:10px'},'この順番で投票を開始　→'),'click',() => {
       confirmOrder([...pendingOrder]);
     });
 
     wrap.appendChild(el('div',{class:'card'},
       el('p',{class:'role-label'},'親：'+(oya()?.name||'')),
       el('p',{class:'section-title'},'選択肢の順番を決めてください'),
-      el('p',{class:'section-note'},'↑↓で並び替え。ランダムにシャッフルも可能。'),
-      listEl,
-      shuffleBtn, startBtn
+      el('p',{class:'section-note'},'↑↓で並び替え。著者名はこの画面だけ表示されます。'),
+      listEl, shuffleBtn, startBtn
     ));
-  }else{
-    wrap.appendChild(waiting('🔀',oya()?.name||'','選択肢の順番を決めています...'));
+  } else {
+    wrap.appendChild(waiting('🔀', oya()?.name||'', '選択肢の順番を決めています...'));
   }
   return wrap;
 }
 
 // ── 投票 ──────────────────────────────────────────
-function renderVoting(){
-  const wrap=el('div');
-  const sh=toArr(gs.shuffled), vs=gs.votes||{};
-  const kids=children(), vdone=kids.filter(c=>vs[c.id]!==undefined).length;
-  const mode=gs.votingMode||'text';
+function renderVoting() {
+  const wrap  = el('div');
+  const sh    = toArr(gs.shuffled), vs = gs.votes||{};
+  const kids  = children(), vdone = kids.filter(c=>vs[c.id]!==undefined).length;
+  const mode  = gs.votingMode||'text';
 
-  wrap.appendChild(hdr('第'+gs.round+' / '+gs.totalRounds+' ラウンド'));
-  wrap.appendChild(el('div',{class:'card'},el('div',{class:'word-big'},gs.word)));
+  wrap.appendChild(hdr(badgeText()));
+  wrap.appendChild(el('div',{class:'card'}, el('div',{class:'word-big'},gs.word)));
+  const tVot = renderTimer('timer-voting', '答えを選ぶ時間');    if (tVot) wrap.appendChild(tVot);
 
-  if(isOya()){
-    const content=[
+  if (isOya()) {
+    const content = [
       el('p',{class:'role-label'},'親：'+(oya()?.name||'')),
-      el('p',{class:'section-title'},mode==='readout'?'定義を読み上げてください':'子が本物を選んでいます'),
+      el('p',{class:'section-title'}, mode==='readout'?'定義を読み上げてください':'子が本物を選んでいます'),
       el('div',{class:'prog-bar'},...kids.map(c=>el('div',{class:'prog-dot'+(vs[c.id]!==undefined?' done':'')}))),
-      el('p',{style:'font-size:13px;color:#888'},vdone+' / '+kids.length+' 人が投票しました')
+      el('p',{style:'font-size:13px;color:#888'}, vdone+' / '+kids.length+' 人が投票しました')
     ];
-    if(mode==='readout'){
-      // 親は全テキストを見る
+    if (mode==='readout') {
       content.push(el('hr',{class:'divhr'}));
-      sh.forEach((def,i)=>{
+      sh.forEach((def,i) => {
         content.push(el('div',{style:'margin-bottom:10px'},
           el('span',{style:'font-size:12px;font-weight:600;color:#bbb;margin-right:8px'},String(i+1)+'.'),
           el('span',{style:'font-size:14px;line-height:1.7;color:#333'},def.text)
@@ -545,62 +709,97 @@ function renderVoting(){
       });
     }
     wrap.appendChild(el('div',{class:'card'},...content));
-  }else if(vs[myId]!==undefined){
+  } else if (vs[myId] !== undefined) {
     wrap.appendChild(el('div',{class:'card'},
-      el('div',{style:'text-align:center;padding:.5rem 0 1rem'},el('span',{class:'submitted'},'✓ 投票済み')),
-      el('p',{style:'font-size:13px;color:#aaa;text-align:center'},'他の人の投票を待っています（'+vdone+' / '+kids.length+'人）')
+      el('div',{style:'text-align:center;padding:.5rem 0 1rem'}, el('span',{class:'submitted'},'✓ 投票済み')),
+      el('p',{style:'font-size:13px;color:#aaa;text-align:center'},
+        '他の人の投票を待っています（'+vdone+' / '+kids.length+'人）')
     ));
-  }else{
-    if(mode==='readout'){
-      // テキストなし、番号ボタンのみ
-      wrap.appendChild(el('div',{class:'card'},
-        el('p',{class:'role-label'},'子：'+myName()),
-        el('p',{class:'section-title',style:'margin-bottom:1rem'},'親の読み上げを聞いて選んでください'),
-        ...sh.map((_,i)=>on(el('button',{class:'num-btn'},String(i+1)),'click',()=>submitVote(i)))
-      ));
-    }else{
-      wrap.appendChild(el('div',{class:'card'},
-        el('p',{class:'role-label'},'子：'+myName()),
-        el('p',{class:'section-title',style:'margin-bottom:1rem'},'本物の定義はどれ？'),
-        ...sh.map((def,i)=>on(el('button',{class:'def-btn'},
-          el('span',{class:'def-num'},String(i+1)),
-          el('span',{class:'def-text'},def.text)
-        ),'click',()=>submitVote(i)))
-      ));
-    }
+  } else if (mode==='readout') {
+    wrap.appendChild(el('div',{class:'card'},
+      el('p',{class:'role-label'},'子：'+myName()),
+      el('p',{class:'section-title',style:'margin-bottom:1rem'},'親の読み上げを聞いて選んでください'),
+      ...sh.map((_,i) => on(el('button',{class:'num-btn'},String(i+1)),'click',()=>submitVote(i)))
+    ));
+  } else {
+    wrap.appendChild(el('div',{class:'card'},
+      el('p',{class:'role-label'},'子：'+myName()),
+      el('p',{class:'section-title',style:'margin-bottom:1rem'},'本物の定義はどれ？'),
+      ...sh.map((def,i) => on(el('button',{class:'def-btn'},
+        el('span',{class:'def-num'},String(i+1)),
+        el('span',{class:'def-text'},def.text)
+      ),'click',()=>submitVote(i)))
+    ));
   }
   return wrap;
 }
 
-// ── ラウンド結果 ──────────────────────────────────
-function renderResults(){
-  const wrap=el('div');
-  const sh=toArr(gs.shuffled), vs=gs.votes||{}, sc=gs.scores||{};
-  const ps=players(), kids=children();
-  const ri=sh.findIndex(d=>d.isReal);
-  const sorted=[...ps].sort((a,b)=>(sc[b.id]||0)-(sc[a.id]||0));
+// ── 投票結果プレビュー（親だけ先に確認） ─────────
+function renderVoteReveal() {
+  const wrap = el('div');
+  wrap.appendChild(hdr(badgeText()));
+  wrap.appendChild(el('div',{class:'card'}, el('div',{class:'word-big'},gs.word)));
 
-  wrap.appendChild(hdr('第'+gs.round+' / '+gs.totalRounds+' ラウンド　答え合わせ'));
+  if (isOya()) {
+    const sh  = toArr(gs.shuffled);
+    const vs  = gs.votes||{};
+    const sc  = gs.pendingScores||{};
+    const kids = children();
+    const ri  = sh.findIndex(d=>d.isReal);
 
-  // ── 個人結果カード ──
-  const myDef=sh.find(d=>d.playerId===myId);
-  const myVote=vs[myId];
-  const myCard=isOya() ? renderOyaResult(sh,vs,kids,ri,sc) : renderKoResult(myDef,myVote,ri,kids,vs,sc);
-  wrap.appendChild(myCard);
-
-  // ── 全定義一覧 ──
-  wrap.appendChild(el('div',{class:'card'},
-    el('p',{class:'role-label',style:'margin-bottom:.5rem'},'お題'),
-    el('div',{class:'word-big',style:'font-size:26px;padding:.5rem 0'},gs.word),
-    el('hr',{class:'divhr'}),
-    ...sh.map((def,i)=>{
-      const voters=kids.filter(c=>vs[c.id]===i).map(c=>c.name);
+    // 定義ごとの投票状況
+    const defItems = sh.map((def, i) => {
+      const voters = kids.filter(c=>vs[c.id]===i).map(c=>c.name);
       return el('div',{class:'def-result'+(def.isReal?' real':'')},
         el('span',{class:'def-num'},String(i+1)),
         el('div',{style:'flex:1'},
           el('div',{class:'def-text'},def.text),
           el('div',{class:'def-meta'+(def.isReal?' real':'')},
-            def.isReal?'✓ 本物（'+dictName()+'）':(def.name+'の回答'),
+            def.isReal ? '✓ 本物（'+dictName()+'）' : def.name+'の回答',
+            ...voters.map(n=>el('span',{class:'vote-chip'},n))
+          )
+        )
+      );
+    });
+
+    wrap.appendChild(el('div',{class:'card'},
+      el('p',{class:'role-label'},'親だけに見えています　→　内容を確認したら発表してください'),
+      el('p',{class:'section-title',style:'margin-bottom:1rem'},'投票結果'),
+      ...defItems
+    ));
+    wrap.appendChild(on(el('button',{class:'btn btn-reveal'},'結果を全員に発表する　🎉'),'click',revealResults));
+  } else {
+    wrap.appendChild(waiting('👀', oya()?.name||'', '親が結果を確認中です...'));
+  }
+  return wrap;
+}
+
+// ── ラウンド結果 ──────────────────────────────────
+function renderResults() {
+  const wrap   = el('div');
+  const sh     = toArr(gs.shuffled), vs = gs.votes||{}, sc = gs.scores||{};
+  const ps     = players(), kids = children();
+  const ri     = sh.findIndex(d=>d.isReal);
+  const sorted = [...ps].sort((a,b)=>(sc[b.id]||0)-(sc[a.id]||0));
+
+  wrap.appendChild(hdr(badgeText()));
+
+  // 個人結果カード
+  wrap.appendChild(isOya() ? renderOyaResult(sh,vs,kids,ri) : renderKoResult(sh,vs,kids,ri));
+
+  // 全定義一覧
+  wrap.appendChild(el('div',{class:'card'},
+    el('p',{class:'role-label',style:'margin-bottom:.5rem'},'お題'),
+    el('div',{class:'word-big',style:'font-size:26px;padding:.5rem 0'},gs.word),
+    el('hr',{class:'divhr'}),
+    ...sh.map((def,i) => {
+      const voters = kids.filter(c=>vs[c.id]===i).map(c=>c.name);
+      return el('div',{class:'def-result'+(def.isReal?' real':'')},
+        el('span',{class:'def-num'},String(i+1)),
+        el('div',{style:'flex:1'},
+          el('div',{class:'def-text'},def.text),
+          el('div',{class:'def-meta'+(def.isReal?' real':'')},
+            def.isReal?'✓ 本物（'+dictName()+'）':def.name+'の回答',
             ...voters.map(n=>el('span',{class:'vote-chip'},n))
           )
         )
@@ -608,93 +807,91 @@ function renderResults(){
     })
   ));
 
-  // ── スコア一覧 ──
+  // スコア
   wrap.appendChild(el('div',{class:'card'},
     el('p',{class:'role-label',style:'margin-bottom:1rem'},'現在のスコア'),
-    ...sorted.map((p,i)=>el('div',{class:'score-row'},
+    ...sorted.map((p,i) => el('div',{class:'score-row'},
       el('span',{class:'score-rank'},String(i+1)),
       el('span',{class:'score-name'},p.name,
-        p.id===myId?el('span',{class:'tag tag-me'},'あなた'):null,
-        p.id===gs.oyaId?el('span',{class:'tag tag-oya'},'親'):null
+        p.id===myId      ? el('span',{class:'tag tag-me'},'あなた') : null,
+        p.id===gs.oyaId  ? el('span',{class:'tag tag-oya'},'親') : null
       ),
       el('span',{class:'score-pt'},String(sc[p.id]||0))
     ))
   ));
 
-  if(isHost()){
-    wrap.appendChild(on(el('button',{class:'btn btn-p',style:'margin-top:4px'},'次のラウンドへ　→'),'click',nextRound));
-  }else{
-    wrap.appendChild(el('p',{class:'muted'},'ゲームマスターが次のラウンドを始めるのを待っています'));
+  if (isHost()) {
+    wrap.appendChild(on(el('button',{class:'btn btn-p',style:'margin-top:4px'},'次のターンへ　→'),'click',nextRound));
+  } else {
+    wrap.appendChild(el('p',{class:'muted'},'ゲームマスターが次のターンを始めるのを待っています'));
   }
   return wrap;
 }
 
-function renderKoResult(myDef,myVote,ri,kids,vs,sc){
-  const rows=[];
-  // 自分の定義に何人騙されたか
-  if(myDef){
-    const sh=toArr(gs.shuffled);
-    const myDefIdx=sh.findIndex(d=>d.playerId===myId);
-    const fooled=kids.filter(c=>vs[c.id]===myDefIdx&&c.id!==myId);
-    if(fooled.length>0){
+function renderKoResult(sh, vs, kids, ri) {
+  const myDefIdx = sh.findIndex(d=>d.playerId===myId);
+  const myVote   = vs[myId];
+  const rows     = [];
+
+  if (myDefIdx >= 0) {
+    const fooled = kids.filter(c=>vs[c.id]===myDefIdx && c.id!==myId);
+    if (fooled.length > 0) {
       rows.push(el('div',{class:'my-result-row'},
-        el('span',{class:'my-result-label'},'あなたの嘘定義　→　'+fooled.map(c=>c.name).join('、')+'を騙した！'),
-        el('span',{class:'my-result-pts'},'+'+fooled.length+'点')
+        el('span',{class:'my-result-label'}, fooled.map(c=>c.name).join('、')+'が選んだ！'),
+        el('span',{class:'my-result-pts'}, '+'+fooled.length+'点')
       ));
-    }else{
+    } else {
       rows.push(el('div',{class:'my-result-row'},
-        el('span',{class:'my-result-zero'},'あなたの嘘定義　→　誰も騙せなかった'),
+        el('span',{class:'my-result-zero'},'あなたの定義を選んだ人はいなかった'),
         el('span',{class:'my-result-zero'},'+0点')
       ));
     }
   }
-  // 本物を当てたか
-  if(myVote===ri){
+
+  if (myVote === ri) {
     rows.push(el('div',{class:'my-result-row'},
       el('span',{class:'my-result-label'},'本物の定義を当てた ✓'),
       el('span',{class:'my-result-pts'},'+2点')
     ));
-  }else{
+  } else {
     rows.push(el('div',{class:'my-result-row'},
       el('span',{class:'my-result-zero'},'本物の定義を外した'),
       el('span',{class:'my-result-zero'},'+0点')
     ));
   }
-  // 合計
-  const prevSc=(sc[myId]||0);  // 現在のscはすでに加算済み
+
   return el('div',{class:'card-green'},
-    el('p',{class:'role-label'},'あなたのラウンド結果（'+myName()+'）'),
+    el('p',{class:'role-label'},'あなたの結果（'+myName()+'）'),
     ...rows
   );
 }
 
-function renderOyaResult(sh,vs,kids,ri,sc){
-  const correctCount=kids.filter(c=>vs[c.id]===ri).length;
-  const rows=[];
-  if(correctCount===0){
+function renderOyaResult(sh, vs, kids, ri) {
+  const correctCount = kids.filter(c=>vs[c.id]===ri).length;
+  const rows = [];
+  if (correctCount === 0) {
     rows.push(el('div',{class:'my-result-row'},
-      el('span',{class:'my-result-label'},'誰も正解しなかった → 親のボーナス'),
+      el('span',{class:'my-result-label'},'誰も正解しなかった → ボーナス'),
       el('span',{class:'my-result-pts'},'+2点')
     ));
-  }else{
+  } else {
     rows.push(el('div',{class:'my-result-row'},
       el('span',{class:'my-result-zero'},correctCount+'人が正解した → ボーナスなし'),
       el('span',{class:'my-result-zero'},'+0点')
     ));
   }
-  // 自分の偽定義（親は本物を出すので偽定義なし → 親は子からの票を得られない仕様）
   return el('div',{class:'card-blue'},
-    el('p',{class:'role-label'},'あなたのラウンド結果（親：'+(oya()?.name||'')+'）'),
+    el('p',{class:'role-label'},'あなたの結果（親：'+(oya()?.name||'')+'）'),
     ...rows
   );
 }
 
 // ── 最終結果 ──────────────────────────────────────
-function renderFinal(){
-  const wrap=el('div');
-  const sc=gs.scores||{}, ps=players();
-  const sorted=[...ps].sort((a,b)=>(sc[b.id]||0)-(sc[a.id]||0));
-  const winner=sorted[0];
+function renderFinal() {
+  const wrap   = el('div');
+  const sc     = gs.scores||{}, ps = players();
+  const sorted = [...ps].sort((a,b)=>(sc[b.id]||0)-(sc[a.id]||0));
+  const winner = sorted[0];
   wrap.appendChild(hdr('最終結果'));
   wrap.appendChild(el('div',{class:'card',style:'text-align:center'},
     el('div',{class:'final-crown'},'🏆'),
@@ -704,29 +901,32 @@ function renderFinal(){
   ));
   wrap.appendChild(el('div',{class:'card'},
     el('p',{class:'role-label',style:'margin-bottom:1rem'},'全員のスコア'),
-    ...sorted.map((p,i)=>el('div',{class:'score-row'},
+    ...sorted.map((p,i) => el('div',{class:'score-row'},
       el('span',{class:'score-rank'},i===0?'🥇':i===1?'🥈':i===2?'🥉':String(i+1)),
-      el('span',{class:'score-name'},p.name,p.id===myId?el('span',{class:'tag tag-me'},'あなた'):null),
+      el('span',{class:'score-name'},p.name, p.id===myId?el('span',{class:'tag tag-me'},'あなた'):null),
       el('span',{class:'score-pt'},String(sc[p.id]||0))
     ))
   ));
-  if(isHost()){
+  if (isHost()) {
     wrap.appendChild(el('p',{class:'role-label',style:'text-align:center;margin-bottom:8px'},'まだ続けますか？'));
     wrap.appendChild(el('div',{class:'btn-row'},
-      on(el('button',{class:'btn'},'+3ラウンド延長'),'click',()=>extendGame(3)),
-      on(el('button',{class:'btn'},'+5ラウンド延長'),'click',()=>extendGame(5))
+      on(el('button',{class:'btn'},'+1ラウンド延長'),'click',()=>extendGame(1)),
+      on(el('button',{class:'btn'},'+3ラウンド延長'),'click',()=>extendGame(3))
     ));
-  }else{
+  } else {
     wrap.appendChild(el('p',{class:'muted'},'ゲームマスターが続けるか決めるのを待っています'));
   }
   return wrap;
 }
 
 // ── サブコンポーネント ──────────────────────────
-function hdr(badge){
-  return el('div',{class:'header'},el('span',{class:'logo'},'たほいや'),el('span',{class:'badge'},badge));
+function hdr(badge) {
+  return el('div',{class:'header'},
+    el('span',{class:'logo'},'たほいや'),
+    el('span',{class:'badge'},badge)
+  );
 }
-function waiting(icon,name,msg){
+function waiting(icon, name, msg) {
   return el('div',{class:'waiting'},
     el('div',{style:'font-size:44px;margin-bottom:1.5rem'},icon),
     el('p',{style:'font-size:11px;color:#aaa;margin-bottom:6px'},'親'),
