@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>たほいや　ルール・使い方</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #faf9f7;
+      color: #1c1c1a;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 5rem;
+    }
+    /* ナビ */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+    .nav-logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      color: #1c1c1a;
+      text-decoration: none;
+    }
+    .nav-link {
+      font-size: 13px;
+      color: #888;
+      text-decoration: none;
+      border: .5px solid #ddd;
+      border-radius: 99px;
+      padding: 5px 14px;
+      transition: background .12s;
+    }
+    .nav-link:hover { background: #f0ede8; }
+
+    /* ページタイトル */
+    .page-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      margin-bottom: .5rem;
+    }
+    .page-sub {
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 2.5rem;
+    }
+
+    /* セクション */
+    .section {
+      margin-bottom: 2.5rem;
+    }
+    .section-label {
+      font-size: 10px;
+      letter-spacing: .14em;
+      color: #bbb;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      letter-spacing: .04em;
+    }
+    .divhr {
+      border: none;
+      border-top: .5px solid #ede9e3;
+      margin: 2rem 0;
+    }
+
+    /* 本文 */
+    p {
+      font-size: 14px;
+      line-height: 1.85;
+      color: #333;
+      margin-bottom: .85rem;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* ステップリスト */
+    .steps { list-style: none; counter-reset: step; }
+    .steps li {
+      counter-increment: step;
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      align-items: flex-start;
+    }
+    .steps li::before {
+      content: counter(step);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #1c1c1a;
+      color: #faf9f7;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .steps li .step-body { flex: 1; }
+    .steps li .step-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: .3rem;
+    }
+    .steps li .step-desc {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.7;
+    }
+
+    /* 得点カード */
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: .75rem;
+      margin: 1rem 0;
+    }
+    .score-card {
+      background: #fff;
+      border: .5px solid #e0ddd8;
+      border-radius: 12px;
+      padding: 1rem .75rem;
+      text-align: center;
+    }
+    .score-card .pts {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: .35rem;
+    }
+    .score-card .pts-label {
+      font-size: 11px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    /* 設定テーブル */
+    .settings-table { width: 100%; border-collapse: collapse; margin: .75rem 0; }
+    .settings-table th {
+      font-size: 11px;
+      letter-spacing: .08em;
+      color: #aaa;
+      text-align: left;
+      padding: .4rem .5rem;
+      border-bottom: .5px solid #e0ddd8;
+    }
+    .settings-table td {
+      font-size: 13px;
+      padding: .55rem .5rem;
+      border-bottom: .5px solid #f0ede8;
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    .settings-table td:first-child {
+      font-weight: 500;
+      white-space: nowrap;
+      color: #444;
+      min-width: 110px;
+    }
+    .settings-table td:last-child { color: #666; }
+
+    /* フロー図 */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .flow-item {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+    }
+    .flow-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      width: 36px;
+    }
+    .flow-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #1c1c1a;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+    .flow-line {
+      width: 1px;
+      flex: 1;
+      min-height: 24px;
+      background: #e0ddd8;
+      margin: 2px 0;
+    }
+    .flow-body {
+      padding-bottom: 1.25rem;
+      flex: 1;
+    }
+    .flow-phase {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: .2rem;
+    }
+    .flow-who {
+      font-size: 11px;
+      color: #aaa;
+      margin-bottom: .2rem;
+    }
+    .flow-desc {
+      font-size: 12px;
+      color: #888;
+      line-height: 1.6;
+    }
+
+    /* ヒントボックス */
+    .hint {
+      background: #f0f4fd;
+      border: .5px solid #b3c8f0;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-size: 13px;
+      color: #3b5bb5;
+      line-height: 1.7;
+      margin: 1rem 0;
+    }
+    .hint strong { font-weight: 600; }
+
+    /* CTAボタン */
+    .cta {
+      display: block;
+      text-align: center;
+      background: #1c1c1a;
+      color: #faf9f7;
+      text-decoration: none;
+      padding: 14px 2rem;
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: 'Noto Sans JP', sans-serif;
+      margin-top: 2.5rem;
+      transition: background .12s;
+    }
+    .cta:hover { background: #333; }
+
+    @media (max-width: 480px) {
+      .score-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 360px) {
+      .score-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ナビ -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">たほいや</a>
+    <a href="index.html" class="nav-link">← アプリに戻る</a>
+  </nav>
+
+  <h1 class="page-title">ルール・使い方</h1>
+  <p class="page-sub">たほいやの基本ルールと、このアプリの操作方法</p>
+
+  <!-- ━━━ たほいやとは ━━━ -->
+  <div class="section">
+    <p class="section-label">About</p>
+    <h2 class="section-title">たほいやとは</h2>
+    <p>
+      辞書の中から難解な言葉を選び、参加者それぞれが「それらしい嘘の定義」を作って提出します。本物の定義と嘘の定義が混ぜて発表され、本物を見抜けるか・嘘で騙せるかを競う言葉遊びです。
+    </p>
+    <p>
+      NHKのテレビ番組をきっかけに広まりましたが、ゲームそのものの歴史は古く、英語圏では "Dictionary Game" や "Fictionary" とも呼ばれます。どの言語の辞書でも遊べます。
+    </p>
+  </div>
+
+  <hr class="divhr">
+
+  <!-- ━━━ 基本ルール ━━━ -->
+  <div class="section">
+    <p class="section-label">Basic Rules</p>
+    <h2 class="section-title">基本ルール</h2>
+
+    <ul class="steps">
+      <li>
+        <div class="step-body">
+          <div class="step-title">親が言葉を選ぶ</div>
+          <div class="step-desc">辞書から難しい言葉を1つ選び、参加者に提示します。意味を知っていそうな言葉は避けるのがコツ。</div>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <div class="step-title">子がそれぞれ嘘の定義を書く</div>
+          <div class="step-desc">親以外の参加者（子）は、それらしい偽物の定義を考えて提出します。お互いの回答は見えません。</div>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <div class="step-title">親が順番を決めて発表する</div>
+          <div class="step-desc">本物の定義と嘘の定義を混ぜ、読み上げるか画面に表示して全員に示します。</div>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <div class="step-title">子が本物を選ぶ</div>
+          <div class="step-desc">各自が「これが本物だ」と思う定義に投票します。</div>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <div class="step-title">答え合わせ・得点計算</div>
+          <div class="step-desc">誰がどれを選んだかが公開され、得点が加算されます。次のターンでは親が交代します。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ━━━ 得点ルール ━━━ -->
+  <div class="section">
+    <p class="section-label">Scoring</p>
+    <h2 class="section-title">得点ルール</h2>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="pts">+2</div>
+        <div class="pts-label">本物の定義を<br>当てた（子）</div>
+      </div>
+      <div class="score-card">
+        <div class="pts">+1</div>
+        <div class="pts-label">自分の嘘定義に<br>票が入った（1票につき）</div>
+      </div>
+      <div class="score-card">
+        <div class="pts">+2</div>
+        <div class="pts-label">誰も正解しなかった<br>（親のボーナス）</div>
+      </div>
+    </div>
+
+    <div class="hint">
+      <strong>ポイント：</strong>「本物っぽい嘘」を書く腕前と、「嘘っぽい本物」を見抜く目の両方が試されます。知ったかぶりは禁物です。
+    </div>
+  </div>
+
+  <hr class="divhr">
+
+  <!-- ━━━ アプリの流れ ━━━ -->
+  <div class="section">
+    <p class="section-label">How to Use</p>
+    <h2 class="section-title">このアプリの使い方</h2>
+
+    <p>各自がスマホやパソコンからアクセスして、同じルームコードで接続します。ゲームマスター（GM）が一人いれば進行できます。</p>
+
+    <!-- フロー -->
+    <div class="flow" style="margin-top:1.5rem">
+
+      <div class="flow-item">
+        <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-phase">ルームを作る</div>
+          <div class="flow-who">ゲームマスター（GM）</div>
+          <div class="flow-desc">「ルームを作る」から名前を入力してルームを作成。4文字のルームコードが表示されます。</div>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-phase">ルームに参加する</div>
+          <div class="flow-who">参加者全員</div>
+          <div class="flow-desc">同じURLを開いて「ルームに参加」からルームコードを入力。3人以上集まったらスタートできます。</div>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-phase">ゲーム設定</div>
+          <div class="flow-who">ゲームマスター</div>
+          <div class="flow-desc">辞書名・ラウンド数・投票モード・タイマーを設定してスタートボタンを押します。</div>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-phase">言葉の入力（各ターンの親）</div>
+          <div class="flow-who">その回の親</div>
+          <div class="flow-desc">辞書から難しい言葉を選んで入力。確認画面で確定すると全員に言葉が表示されます。</div>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-phase">定義の入力</div>
+          <div class="flow-who">親・子が同時進行</div>
+          <div class="flow-desc">子はそれぞれ嘘の定義を入力して提出。親は同じ画面で本物の定義を入力して保存できます。全員揃うまで他の人の回答は見えません。</div>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-phase">順番の確定</div>
+          <div class="flow-who">親</div>
+          <div class="flow-desc">選択肢の読み上げ順を↑↓で並び替えて確定。誰の回答かは親の画面にだけ表示されます。</div>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-phase">投票</div>
+          <div class="flow-who">子</div>
+          <div class="flow-desc">テキスト表示モード：各自の画面で定義を読んで選択。読み上げモード：親が読み上げ、子は番号ボタンだけで投票。</div>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-phase">結果の発表</div>
+          <div class="flow-who">親 → 全員</div>
+          <div class="flow-desc">投票が揃うと親の画面に結果が先表示されます。親が「発表する」ボタンを押した瞬間、全員に開示されます。</div>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-left"><div class="flow-dot"></div></div>
+        <div class="flow-body">
+          <div class="flow-phase">ターン交代・繰り返し</div>
+          <div class="flow-who">ゲームマスター</div>
+          <div class="flow-desc">GMが「次のターンへ」を押すと親が交代して次のターンへ。全ターン終了後に最終結果が表示されます。延長も可能。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divhr">
+
+  <!-- ━━━ 設定項目 ━━━ -->
+  <div class="section">
+    <p class="section-label">Settings</p>
+    <h2 class="section-title">ゲーム設定の一覧</h2>
+
+    <table class="settings-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>使う辞書</td>
+          <td>辞書名を自由に入力（広辞苑、Oxford Dictionary など）。結果画面の「本物」ラベルに反映されます。</td>
+        </tr>
+        <tr>
+          <td>ラウンド数</td>
+          <td>1ラウンド ＝ 全員が1回ずつ親をやるターン数。1〜5ラウンドから選択。終了後に延長も可能。</td>
+        </tr>
+        <tr>
+          <td>投票モード</td>
+          <td>
+            <strong>テキスト表示：</strong>各自の画面に定義テキストが表示され、タップして選択。<br>
+            <strong>親が読み上げ：</strong>子の画面には番号ボタンのみ表示。親が声で読み上げる対面向けモード。
+          </td>
+        </tr>
+        <tr>
+          <td>タイマー</td>
+          <td>定義を考える時間と、答えを選ぶ時間をそれぞれ設定可能。カウントダウンが0になると赤く点滅してカウントアップに切り替わります。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divhr">
+
+  <!-- ━━━ ヒント ━━━ -->
+  <div class="section">
+    <p class="section-label">Tips</p>
+    <h2 class="section-title">うまく遊ぶコツ</h2>
+
+    <ul class="steps">
+      <li>
+        <div class="step-body">
+          <div class="step-title">言葉選びが勝負の半分</div>
+          <div class="step-desc">完全に未知の言葉より、「聞いたことはあるが意味は曖昧」な言葉が一番盛り上がります。漢語・古語・専門用語がねらい目です。</div>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <div class="step-title">嘘の定義は「辞書っぽく」</div>
+          <div class="step-desc">「〜のこと。主に〜地方で用いられる」「〜に由来する語で、〜を意味する」など、辞書の文体を真似ると効果的です。</div>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <div class="step-title">親の読み上げモードは対面向け</div>
+          <div class="step-desc">声のトーンや読み方で笑いが生まれます。参加者が同じ場所にいる場合はこちらがおすすめです。</div>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <div class="step-title">タイマーでテンポをキープ</div>
+          <div class="step-desc">定義を考える時間に3分、投票に1分を設定するとテンポよく進みます。慣れてきたら時間を短くするのも面白いです。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- CTA -->
+  <a href="index.html" class="cta">ゲームをはじめる　→</a>
+
+</div>
+</body>
+</html>
