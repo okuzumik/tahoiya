@@ -36,8 +36,11 @@
     .btn-reveal:hover{background:#2d469a}
     .btn-row{display:flex;gap:8px;margin-top:6px}
     .btn-row .btn{margin-top:0}
-    .def-btn{display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;background:#fff;border:.5px solid #e0ddd8;border-radius:8px;padding:.85rem 1rem;margin-bottom:8px;cursor:pointer;font-family:'Noto Sans JP',sans-serif}
+    .def-btn{display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;background:#fff;border:.5px solid #e0ddd8;border-radius:8px;padding:.85rem 1rem;margin-bottom:8px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:background .1s,border-color .1s}
     .def-btn:hover{background:#f5f4f0}
+    .def-btn.selected{background:#f0f4fd;border-color:#3b5bb5;border-width:1.5px}
+    .def-btn.selected .def-num{color:#3b5bb5}
+    .num-btn.selected{background:#1c1c1a;color:#faf9f7;border-color:#1c1c1a}
     .def-num{font-size:14px;font-weight:500;color:#bbb;min-width:22px;padding-top:1px;flex-shrink:0}
     .def-text{font-size:14px;line-height:1.7}
     .num-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:1.2rem;border:.5px solid #e0ddd8;border-radius:10px;background:#fff;font-family:'Noto Serif JP',serif;font-size:28px;font-weight:600;cursor:pointer;margin-bottom:10px;transition:background .1s}
@@ -150,6 +153,9 @@ let myId     = localStorage.getItem('tahoiya_id') || genId();
 let roomCode = null, roomRef = null, gs = null;
 let pendingOrder  = null;
 let timerInterval = null;
+// フォームの下書き保存（Firebase再描画で消えないように）
+const drafts = { word: '', wordConfirm: false, fakeDef: '', realDef: '', voteIdx: null };
+let lastTurn = null;
 localStorage.setItem('tahoiya_id', myId);
 
 // ━━━ セレクタ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -322,6 +328,12 @@ function render() {
   // タイマーを止める（再レンダリング前にクリア）
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   if (!roomCode || !gs) { app.innerHTML = ''; app.appendChild(renderHome()); return; }
+  // ターンが変わったら下書きをリセット
+  if (gs.turn !== lastTurn) {
+    drafts.word = ''; drafts.wordConfirm = false;
+    drafts.fakeDef = ''; drafts.realDef = ''; drafts.voteIdx = null;
+    lastTurn = gs.turn;
+  }
   try {
     const screens = {
       lobby: renderLobby, 'word-input': renderWordInput,
@@ -528,16 +540,20 @@ function renderWordInput() {
   const wrap = el('div');
   wrap.appendChild(hdr(badgeText()));
   if (isOya()) {
-    let draft = '';
     const inputArea   = el('div');
-    const previewArea = el('div',{style:'display:none'});
+    const previewArea = el('div',{style: drafts.wordConfirm ? '' : 'display:none'});
+    inputArea.style.display = drafts.wordConfirm ? 'none' : '';
+
     const inp = el('input',{type:'text',placeholder:'例：みやびやか、くぐつ...'});
-    inp.addEventListener('input', e => { draft = e.target.value; });
+    inp.value = drafts.word;  // 下書き復元
+    inp.addEventListener('input', e => { drafts.word = e.target.value; });
     inp.addEventListener('keydown', e => { if (e.key==='Enter') e.preventDefault(); });
-    const wordPreview = el('div',{class:'word-confirm'},'');
+
+    const wordPreview = el('div',{class:'word-confirm'}, drafts.word);
     const toPreviewBtn = on(el('button',{class:'btn btn-p'},'確認する　→'),'click',() => {
-      if (!draft.trim()) return;
-      wordPreview.textContent = draft.trim();
+      if (!drafts.word.trim()) return;
+      wordPreview.textContent = drafts.word.trim();
+      drafts.wordConfirm = true;
       inputArea.style.display='none'; previewArea.style.display='';
     });
     inputArea.appendChild(el('p',{class:'role-label'},'親：'+(oya()?.name||'')));
@@ -547,15 +563,21 @@ function renderWordInput() {
     inputArea.appendChild(toPreviewBtn);
 
     const backBtn = on(el('button',{class:'btn'},'← 書き直す'),'click',() => {
-      inputArea.style.display=''; previewArea.style.display='none'; inp.value=draft; inp.focus();
+      drafts.wordConfirm = false;
+      inputArea.style.display=''; previewArea.style.display='none';
+      inp.value = drafts.word; inp.focus();
     });
-    const okBtn = on(el('button',{class:'btn btn-p'},'これで決定'),'click',() => { if (draft.trim()) confirmWord(draft.trim()); });
+    const okBtn = on(el('button',{class:'btn btn-p'},'これで決定'),'click',() => {
+      if (drafts.word.trim()) { confirmWord(drafts.word.trim()); drafts.word=''; drafts.wordConfirm=false; }
+    });
     previewArea.appendChild(el('p',{class:'role-label'},'この言葉でよいですか？'));
     previewArea.appendChild(wordPreview);
     previewArea.appendChild(el('hr',{class:'divhr'}));
     previewArea.appendChild(el('div',{class:'btn-row'},backBtn,okBtn));
 
     wrap.appendChild(el('div',{class:'card'},inputArea,previewArea));
+    // 確認モードなら入力フィールドにフォーカス不要、そうでなければ自動フォーカス
+    if (!drafts.wordConfirm) setTimeout(()=>inp.focus(), 50);
   } else {
     wrap.appendChild(waiting('📖', oya()?.name||'', '辞書から言葉を選んでいます...'));
   }
@@ -578,15 +600,17 @@ function renderCollecting() {
   if (isOya()) {
     const content = [];
     if (!hasReal) {
-      let r = '';
       const inp = el('textarea',{placeholder:'辞書の定義をそのまま入力...'});
-      inp.addEventListener('input', e => { r = e.target.value; });
+      inp.value = drafts.realDef;  // 下書き復元
+      inp.addEventListener('input', e => { drafts.realDef = e.target.value; });
       content.push(
         el('p',{class:'role-label'},'親：'+(oya()?.name||'')),
         el('p',{class:'section-title'},'本物の定義を入力してください'),
         el('p',{class:'section-note'},'子が嘘の定義を入力している間に、先に辞書の定義を入力しておけます。'),
         inp,
-        on(el('button',{class:'btn btn-p'},'保存する'),'click',() => { if (r.trim()) saveRealDef(r.trim()); })
+        on(el('button',{class:'btn btn-p'},'保存する'),'click',() => {
+          if (drafts.realDef.trim()) { saveRealDef(drafts.realDef.trim()); drafts.realDef = ''; }
+        })
       );
     } else {
       content.push(
@@ -616,15 +640,18 @@ function renderCollecting() {
       canStart ? el('p',{style:'font-size:13px;color:#888;text-align:center;margin-top:.75rem'},'親が順番を決めています...') : null
     ));
   } else {
-    let f = '';
     const inp = el('textarea',{placeholder:'それっぽいけど偽物の定義を書いてください...'});
-    inp.addEventListener('input', e => { f = e.target.value; });
+    inp.value = drafts.fakeDef;  // 下書き復元
+    inp.addEventListener('input', e => { drafts.fakeDef = e.target.value; });
+    setTimeout(() => { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }, 50);
     wrap.appendChild(el('div',{class:'card'},
       el('p',{class:'role-label'},'子：'+myName()),
       el('p',{class:'section-title'},'嘘の定義を考えてください'),
       el('p',{class:'section-note'},'それっぽいけど偽物の定義を入力。他の人には見えません。'),
       inp,
-      on(el('button',{class:'btn btn-p'},'提出　→'),'click',() => { if (f.trim()) submitFake(f.trim()); })
+      on(el('button',{class:'btn btn-p'},'提出　→'),'click',() => {
+        if (drafts.fakeDef.trim()) { submitFake(drafts.fakeDef.trim()); drafts.fakeDef = ''; }
+      })
     ));
   }
   return wrap;
@@ -731,16 +758,30 @@ function renderVoting() {
     wrap.appendChild(el('div',{class:'card'},
       el('p',{class:'role-label'},'子：'+myName()),
       el('p',{class:'section-title',style:'margin-bottom:1rem'},'親の読み上げを聞いて選んでください'),
-      ...sh.map((_,i) => on(el('button',{class:'num-btn'},String(i+1)),'click',()=>submitVote(i)))
+      ...sh.map((_,i) => {
+        const btn = el('button',{class:'num-btn'+(drafts.voteIdx===i?' selected':'')},String(i+1));
+        btn.addEventListener('click',()=>{ drafts.voteIdx=i; render(); });
+        return btn;
+      }),
+      drafts.voteIdx !== null ? on(el('button',{class:'btn btn-p',style:'margin-top:8px'},
+        '「'+String(drafts.voteIdx+1)+'番」に決める　→'
+      ),'click',()=>{ submitVote(drafts.voteIdx); drafts.voteIdx=null; }) : null
     ));
   } else {
     wrap.appendChild(el('div',{class:'card'},
       el('p',{class:'role-label'},'子：'+myName()),
       el('p',{class:'section-title',style:'margin-bottom:1rem'},'本物の定義はどれ？'),
-      ...sh.map((def,i) => on(el('button',{class:'def-btn'},
-        el('span',{class:'def-num'},String(i+1)),
-        el('span',{class:'def-text'},def.text)
-      ),'click',()=>submitVote(i)))
+      ...sh.map((def,i) => {
+        const btn = el('button',{class:'def-btn'+(drafts.voteIdx===i?' selected':'')},
+          el('span',{class:'def-num'},String(i+1)),
+          el('span',{class:'def-text'},def.text)
+        );
+        btn.addEventListener('click',()=>{ drafts.voteIdx=i; render(); });
+        return btn;
+      }),
+      drafts.voteIdx !== null ? on(el('button',{class:'btn btn-p',style:'margin-top:8px'},
+        '「'+(drafts.voteIdx+1)+'番」に決める　→'
+      ),'click',()=>{ submitVote(drafts.voteIdx); drafts.voteIdx=null; }) : null
     ));
   }
   return wrap;
