@@ -440,8 +440,8 @@ function renderHome() {
     jName, jCode, jErr, jBtn
   ));
   wrap.appendChild(el('div',{class:'rules-card'},
-    '親が辞書から難しい言葉を選び、子それぞれがそれっぽい嘘の定義を考えます。', el('br'), el('br'),
-    '本物を当てたら +2点　／　嘘定義に票が入ったら +1点/票　／　親は誤答した人数分 +1点'
+    '親が辞書から難しい言葉を選び、子それぞれがそれっぽい定義を考えます。', el('br'), el('br'),
+    '本物を当てたら +2点　／　自分の定義に票が入ったら +1点/票　／　親は誤答した人数分 +1点'
   ));
   return wrap;
 }
@@ -584,7 +584,7 @@ function renderWordInput() {
   return wrap;
 }
 
-// ── 嘘定義収集（並行入力） ──────────────────────
+// ── 定義収集（並行入力） ──────────────────────
 function renderCollecting() {
   const wrap = el('div');
   const kids = children(), fakes = gs.fakeDefs||{};
@@ -606,7 +606,7 @@ function renderCollecting() {
       content.push(
         el('p',{class:'role-label'},'親：'+(oya()?.name||'')),
         el('p',{class:'section-title'},'本物の定義を入力してください'),
-        el('p',{class:'section-note'},'子が嘘の定義を入力している間に、先に辞書の定義を入力しておけます。'),
+        el('p',{class:'section-note'},'子が定義を入力している間に、先に辞書の定義を入力しておけます。'),
         inp,
         on(el('button',{class:'btn btn-p'},'保存する'),'click',() => {
           if (drafts.realDef.trim()) { saveRealDef(drafts.realDef.trim()); drafts.realDef = ''; }
@@ -640,14 +640,14 @@ function renderCollecting() {
       canStart ? el('p',{style:'font-size:13px;color:#888;text-align:center;margin-top:.75rem'},'親が順番を決めています...') : null
     ));
   } else {
-    const inp = el('textarea',{placeholder:'それっぽいけど偽物の定義を書いてください...'});
+    const inp = el('textarea',{placeholder:'それっぽい定義を書いてください...'});
     inp.value = drafts.fakeDef;  // 下書き復元
     inp.addEventListener('input', e => { drafts.fakeDef = e.target.value; });
     setTimeout(() => { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }, 50);
     wrap.appendChild(el('div',{class:'card'},
       el('p',{class:'role-label'},'子：'+myName()),
-      el('p',{class:'section-title'},'嘘の定義を考えてください'),
-      el('p',{class:'section-note'},'それっぽいけど偽物の定義を入力。他の人には見えません。'),
+      el('p',{class:'section-title'},'それっぽい定義を考えてください'),
+      el('p',{class:'section-note'},'辞書にありそうな定義を考えて入力。他の人には見えません。'),
       inp,
       on(el('button',{class:'btn btn-p'},'提出　→'),'click',() => {
         if (drafts.fakeDef.trim()) { submitFake(drafts.fakeDef.trim()); drafts.fakeDef = ''; }
@@ -682,7 +682,7 @@ function renderOrdering() {
         // 著者ラベル（親だけが見るこの画面に表示）
         const authorLabel = def.isReal
           ? '【' + dictName() + '】本物'
-          : '【' + def.name + '】の嘘定義';
+          : '【' + def.name + '】の定義';
         listEl.appendChild(el('div',{class:'order-item'},
           el('span',{class:'order-num'},String(i+1)),
           el('div',{class:'order-body'},
